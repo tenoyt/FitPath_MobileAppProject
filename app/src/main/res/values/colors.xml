@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Your existing colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background_light">#F5F5F7</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="text_primary">#1D1D1F</color>
+    <color name="text_secondary">#6E6E73</color>
+    <color name="accent_color">#007AFF</color>
+
+    <!-- ADD THIS NEW DARK PALETTE -->
+    <color name="background_dark">#121212</color>       <!-- A standard dark background -->
+    <color name="card_background_dark">#1E1E1E</color>  <!-- Slightly lighter for cards -->
+    <color name="text_primary_dark">#E1E1E1</color>    <!-- Off-white for primary text -->
+    <color name="text_secondary_dark">#9E9E9E</color>  <!-- Gray for secondary text -->
+
+</resources>
+
