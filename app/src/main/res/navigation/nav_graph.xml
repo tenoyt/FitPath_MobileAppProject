@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/Login">
+
+    <fragment
+        android:id="@+id/Login"
+        android:name="com.example.fitpath.LoginFragment"
+        android:label="@string/Login"
+        tools:layout="@layout/login_fragment">
+
+        <action
+            android:id="@+id/action_Login_to_Register"
+            app:destination="@id/Register" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/Register"
+        android:name="com.example.fitpath.RegisterFragment"
+        android:label="@string/Register"
+        tools:layout="@layout/register_fragment">
+
+        <action
+            android:id="@+id/action_Register_to_Login"
+            app:destination="@id/Login" />
+    </fragment>
+
+</navigation>
