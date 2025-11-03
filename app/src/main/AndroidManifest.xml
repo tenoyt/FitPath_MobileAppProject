@@ -14,8 +14,13 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.FitPath">
-            <intent-filter>
+            android:theme="@style/Theme.FitPath"/>
+        <activity
+            android:name=".MainnActivity"
+            android:exported="true"
+            android:theme="@style/Theme.FitPath.NoActionBar">
+
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
