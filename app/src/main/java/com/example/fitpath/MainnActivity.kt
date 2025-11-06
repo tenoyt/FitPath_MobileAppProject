@@ -1,7 +1,6 @@
 package com.example.fitpath
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
 import androidx.navigation.findNavController
 
 class MainnActivity : BaseActivity() {
@@ -21,7 +20,8 @@ class MainnActivity : BaseActivity() {
                 .navigate(R.id.settingsFragment)
         }
         findViewById<Button>(R.id.btnWorkouts).setOnClickListener {
-            Toast.makeText(this, "coming soon", Toast.LENGTH_SHORT).show()
+            findNavController(R.id.fragment_container)
+                .navigate(R.id.workoutLibraryFragment)
         }
 
 

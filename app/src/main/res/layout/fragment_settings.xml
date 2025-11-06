@@ -37,4 +37,11 @@
         android:hint="Email"
         android:enabled="false"
         android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnSeedData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Sample Exercises"
+        android:layout_margin="16dp" />
 </LinearLayout>

@@ -42,12 +42,34 @@
             android:id="@+id/action_Dashboard_to_Login"
             app:destination="@id/Login" />
     </fragment>
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.fitpath.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
 
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- WORKOUT FRAGMENTS - ADDED FOR WORKOUT MODULE           -->
+    <!-- ═══════════════════════════════════════════════════════ -->
 
+    <fragment
+        android:id="@+id/workoutLibraryFragment"
+        android:name="com.example.fitpath.WorkoutLibraryFragment"
+        android:label="Workouts"
+        tools:layout="@layout/fragment_workout_library">
+
+        <action
+            android:id="@+id/action_workoutLibrary_to_workoutBuilder"
+            app:destination="@id/workoutBuilderFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/workoutBuilderFragment"
+        android:name="com.example.fitpath.WorkoutBuilderFragment"
+        android:label="Create Workout"
+        tools:layout="@layout/fragment_workout_builder" />
+
+    <!-- ═══════════════════════════════════════════════════════ -->
 
 </navigation>
