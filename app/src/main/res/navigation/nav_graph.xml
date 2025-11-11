@@ -1,75 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/Login">
 
     <fragment
         android:id="@+id/Login"
         android:name="com.example.fitpath.LoginFragment"
-        android:label="@string/Login"
-        tools:layout="@layout/login_fragment">
-
+        android:label="Login">
         <action
             android:id="@+id/action_Login_to_Register"
             app:destination="@id/Register" />
         <action
             android:id="@+id/action_Login_to_Dashboard"
-            app:destination="@id/Dashboard" />
-
-
+            app:destination="@id/dashboard" />
     </fragment>
 
     <fragment
         android:id="@+id/Register"
         android:name="com.example.fitpath.RegisterFragment"
-        android:label="@string/Register"
-        tools:layout="@layout/register_fragment">
-
+        android:label="Register">
         <action
             android:id="@+id/action_Register_to_Login"
             app:destination="@id/Login" />
+        <action
+            android:id="@+id/action_Register_to_Dashboard"
+            app:destination="@id/dashboard" />
     </fragment>
 
     <fragment
-        android:id="@+id/Dashboard"
+        android:id="@+id/dashboard"
         android:name="com.example.fitpath.DashboardFragment"
-        android:label="Dashboard"
-        tools:layout="@layout/fragment_dashboard">
-
+        android:label="Dashboard">
         <action
-            android:id="@+id/action_Dashboard_to_Login"
-            app:destination="@id/Login" />
+            android:id="@+id/action_dashboard_to_settings"
+            app:destination="@id/settings" />
+        <action
+            android:id="@+id/action_dashboard_to_workoutLibrary"
+            app:destination="@id/workoutLibrary" />
     </fragment>
 
     <fragment
-        android:id="@+id/settingsFragment"
+        android:id="@+id/settings"
         android:name="com.example.fitpath.SettingsFragment"
-        android:label="Settings"
-        tools:layout="@layout/fragment_settings" />
-
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <!-- WORKOUT FRAGMENTS - ADDED FOR WORKOUT MODULE           -->
-    <!-- ═══════════════════════════════════════════════════════ -->
+        android:label="Settings" />
 
     <fragment
-        android:id="@+id/workoutLibraryFragment"
+        android:id="@+id/workoutLibrary"
         android:name="com.example.fitpath.WorkoutLibraryFragment"
-        android:label="Workouts"
-        tools:layout="@layout/fragment_workout_library">
-
-        <action
-            android:id="@+id/action_workoutLibrary_to_workoutBuilder"
-            app:destination="@id/workoutBuilderFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/workoutBuilderFragment"
-        android:name="com.example.fitpath.WorkoutBuilderFragment"
-        android:label="Create Workout"
-        tools:layout="@layout/fragment_workout_builder" />
-
-    <!-- ═══════════════════════════════════════════════════════ -->
-
+        android:label="Workout Library" />
 </navigation>

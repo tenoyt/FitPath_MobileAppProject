@@ -1,60 +1,54 @@
 package com.example.fitpath
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.card.MaterialCardView
 
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
-    private lateinit var loginBtn: Button
-
-    private lateinit var sessionManager: SessionManager
+    private val store by lazy { requireContext().getSharedPreferences("dashboard", android.content.Context.MODE_PRIVATE) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sessionManager = SessionManager(requireContext())
+        val tvName: TextView = view.findViewById(R.id.tvName)
+        val tvSteps: TextView = view.findViewById(R.id.tvSteps)
+        val tvWorkouts: TextView = view.findViewById(R.id.tvWorkouts)
+        val tvGoal: TextView = view.findViewById(R.id.tvGoal)
+        val btnLogWorkout: Button = view.findViewById(R.id.btnLogWorkout)
+        val btnWorkoutLibrary: Button = view.findViewById(R.id.btnWorkoutLibrary)
+        val btnSettings: Button = view.findViewById(R.id.btnSettings)
 
-        loginBtn = view.findViewById(R.id.btnLoginRegister)
+        val settings = requireContext().getSharedPreferences("settings", android.content.Context.MODE_PRIVATE)
+        val name = settings.getString("name", "Athlete")
+        tvName.text = "Hi, " + name
 
-        // Workout and Meal cards
-        view.findViewById<MaterialCardView>(R.id.cardLogWorkout).setOnClickListener {
-            Toast.makeText(requireContext(), "Workout logging coming soon!", Toast.LENGTH_SHORT).show()
+        updateStats(tvSteps, tvWorkouts, tvGoal)
+
+        btnLogWorkout.setOnClickListener {
+            val workouts = store.getInt("workouts_week", 0) + 1
+            store.edit().putInt("workouts_week", workouts).apply()
+            updateStats(tvSteps, tvWorkouts, tvGoal)
         }
-        view.findViewById<MaterialCardView>(R.id.cardLogMeal).setOnClickListener {
-            Toast.makeText(requireContext(), "Meal logging coming soon!", Toast.LENGTH_SHORT).show()
+
+        btnWorkoutLibrary.setOnClickListener {
+            findNavController().navigate(R.id.workoutLibrary)
         }
 
-
-
-        updateLoginButton()
-    }
-
-    private fun updateLoginButton() {
-        if (sessionManager.isSignedIn()) {
-            loginBtn.text = "Sign Out"
-            loginBtn.setOnClickListener {
-                sessionManager.logout()
-                Toast.makeText(requireContext(), "Signed out", Toast.LENGTH_SHORT).show()
-                updateLoginButton()
-                findNavController().navigate(R.id.Login)
-            }
-        } else {
-            loginBtn.text = "Login / Register"
-            loginBtn.setOnClickListener {
-                findNavController().navigate(R.id.Login)
-            }
+        btnSettings.setOnClickListener {
+            findNavController().navigate(R.id.settings)
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        updateLoginButton()
+    private fun updateStats(tvSteps: TextView, tvWorkouts: TextView, tvGoal: TextView) {
+        val steps = store.getInt("steps_today", 4500)
+        val workouts = store.getInt("workouts_week", 0)
+        val goal = store.getInt("goal_weekly", 3)
+        tvSteps.text = steps.toString()
+        tvWorkouts.text = workouts.toString()
+        tvGoal.text = "Weekly goal: " + workouts + "/" + goal
     }
 }

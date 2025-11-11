@@ -1,29 +1,26 @@
 package com.example.fitpath
-import android.os.Bundle
-import android.widget.Button
-import androidx.navigation.findNavController
 
-class MainnActivity : BaseActivity() {
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
+class MainnActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mainn)
-        supportActionBar?.hide()
 
+        // Get the NavHostFragment from the FragmentManager
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragment_container) as NavHostFragment
 
-        findViewById<Button>(R.id.btnDashboard).setOnClickListener {
-            findNavController(R.id.fragment_container)
-                .navigate(R.id.Dashboard)
-        }
-        findViewById<Button>(R.id.btnSettings).setOnClickListener {
-            findNavController(R.id.fragment_container)
-                .navigate(R.id.settingsFragment)
-        }
-        findViewById<Button>(R.id.btnWorkouts).setOnClickListener {
-            findNavController(R.id.fragment_container)
-                .navigate(R.id.workoutLibraryFragment)
-        }
+        // Get the NavController from the NavHostFragment
+        val navController = navHostFragment.navController
 
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
+        bottomNavigationView.setupWithNavController(navController)
     }
 }
