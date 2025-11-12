@@ -1,6 +1,7 @@
 package com.example.fitpath
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,9 @@ class LoginFragment : Fragment() {
     private lateinit var binding: LoginFragmentBinding
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+
+
+    private val TAG = "LoginFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,37 +52,42 @@ class LoginFragment : Fragment() {
 
         showLoading(true)
 
-
         if (Patterns.EMAIL_ADDRESS.matcher(identifier).matches()) {
-
+            Log.d(TAG, "Identifier is an email. Signing in directly.")
             signInWithFirebase(identifier, password)
         } else {
+            Log.d(TAG, "Identifier is a username. Querying Firestore...")
             findEmailForUsername(identifier, password)
         }
     }
 
     private fun findEmailForUsername(username: String, password: String) {
+        Log.d(TAG, "Attempting to find email for username: $username")
+
         db.collection("users").whereEqualTo("username", username).limit(1).get()
             .addOnSuccessListener { documents ->
-                if (documents.isEmpty) {
+                Log.d(TAG, "Query successful, found ${documents.size()} documents.")
 
+                if (documents.isEmpty) {
+                    Log.w(TAG, "Username '$username' not found in database (is it case-sensitive?).")
                     showLoading(false)
                     Toast.makeText(requireContext(), "Invalid username or password", Toast.LENGTH_SHORT).show()
                 } else {
-
                     val email = documents.first().getString("email")
                     if (email != null) {
+                        Log.d(TAG, "Username found! Email is: $email. Attempting login...")
                         signInWithFirebase(email, password)
                     } else {
-                        // Data error
+                        Log.e(TAG, "User document found, but 'email' field is null or missing.")
                         showLoading(false)
                         Toast.makeText(requireContext(), "An error occurred. Please try again.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-            .addOnFailureListener {
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error querying for username: ${e.message}", e) // This logs the real error
                 showLoading(false)
-                Toast.makeText(requireContext(), "Error checking user data: ${it.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error checking user data. Check Logcat.", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -88,10 +97,12 @@ class LoginFragment : Fragment() {
                 if (task.isSuccessful) {
                     showLoading(false)
                     Toast.makeText(requireContext(), "Login successful!", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_Login_to_Dashboard)
+
+
+                    findNavController().navigate(R.id.action_Login_to_main_content)
                 } else {
+                    Log.w(TAG, "Firebase signInWithEmailAndPassword failed: ${task.exception?.message}")
                     showLoading(false)
-                    // Use a generic error for security
                     Toast.makeText(requireContext(), "Invalid username or password", Toast.LENGTH_SHORT).show()
                 }
             }

@@ -8,6 +8,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController // <-- THEIR IMPORT
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitpath.adapter.WorkoutAdapter
@@ -97,6 +98,9 @@ class WorkoutLibraryFragment : Fragment() {
                 if (category == "All") isChecked = true
 
                 setOnClickListener {
+                    // --- THEIR BUG FIX ---
+                    (chipGroup.getChildAt(0) as Chip).isChecked = category == "All"
+
                     if (category == "All") {
                         loadWorkouts()
                     } else {
@@ -109,9 +113,10 @@ class WorkoutLibraryFragment : Fragment() {
     }
 
     private fun setupFab() {
+        // --- THEIR FUNCTIONAL BUTTON ---
         fabCreate.setOnClickListener {
-            // TODO: Navigate to workout builder when navigation is set up
-            Toast.makeText(requireContext(), "Workout builder - coming soon!", Toast.LENGTH_SHORT).show()
+            // This navigates to the new workout builder screen
+            findNavController().navigate(R.id.action_workoutLibraryFragment_to_workoutBuilderFragment)
         }
     }
 

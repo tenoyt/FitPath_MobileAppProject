@@ -60,7 +60,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvWelcome"
         app:layout_constraintBottom_toBottomOf="@id/tvWelcome"
-        app:tint="?attr/colorOnSurface" />
+        app:tint="?attr/colorOnSurface"
+        android:contentDescription="User Profile" />
 
 
     <TextView
@@ -100,7 +101,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_workout"
-                app:tint="?attr/colorPrimary" />
+                app:tint="?attr/colorPrimary"
+                android:contentDescription="Workout Icon" />
 
             <TextView
                 android:layout_width="0dp"
@@ -116,7 +118,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_chevron_right"
-                app:tint="?android:attr/textColorSecondary" />
+                app:tint="?android:attr/textColorSecondary"
+                android:contentDescription="Next" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -146,7 +149,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_meal"
-                app:tint="?attr/colorPrimary" />
+                app:tint="?attr/colorPrimary"
+                android:contentDescription="Meal Icon" />
 
             <TextView
                 android:layout_width="0dp"
@@ -162,8 +166,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_chevron_right"
-                app:tint="?android:attr/textColorSecondary" />
-
+                app:tint="?android:attr/textColorSecondary"
+                android:contentDescription="Next" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

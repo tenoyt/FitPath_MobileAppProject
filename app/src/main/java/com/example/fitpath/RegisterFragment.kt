@@ -43,13 +43,10 @@ class RegisterFragment : Fragment() {
         val confirmPassword = binding.confirmPasswordEditText.text.toString().trim()
         val username = binding.usernameEditText.text.toString().trim()
 
-
-
         if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || username.isEmpty()) {
             Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
             return
         }
-
 
         val usernamePattern = Regex("^[a-zA-Z0-9]{4,12}$")
         if (!username.matches(usernamePattern)) {
@@ -75,17 +72,13 @@ class RegisterFragment : Fragment() {
             return
         }
 
-
         showLoading(true)
-
 
         db.collection("users").whereEqualTo("username", username).get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
-
                     createUserInFirebase(email, password, username)
                 } else {
-
                     binding.usernameEditText.error = "This username is already taken"
                     showLoading(false)
                 }
@@ -97,11 +90,9 @@ class RegisterFragment : Fragment() {
     }
 
     private fun createUserInFirebase(email: String, password: String, username: String) {
-
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-
                     val userId = auth.currentUser?.uid
                     val user = hashMapOf(
                         "email" to email,
@@ -109,7 +100,6 @@ class RegisterFragment : Fragment() {
                     )
 
                     if (userId != null) {
-
                         db.collection("users").document(userId)
                             .set(user)
                             .addOnSuccessListener {

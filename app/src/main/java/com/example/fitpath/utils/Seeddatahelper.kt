@@ -4,8 +4,8 @@ import com.example.fitpath.model.Exercise
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-import com.example.fitpath.model.Workout
-import com.example.fitpath.model.WorkoutExercise
+import com.example.fitpath.model.Workout // <-- Your import
+import com.example.fitpath.model.WorkoutExercise // <-- Your import
 
 class SeedDataHelper {
     private val db = FirebaseFirestore.getInstance()
@@ -226,7 +226,7 @@ class SeedDataHelper {
                 )
             )
 
-
+            // Add each exercise to Firestore
             sampleExercises.forEach { exercise ->
                 db.collection("exercises")
                     .add(exercise)
@@ -238,6 +238,8 @@ class SeedDataHelper {
             Result.failure(e)
         }
     }
+
+    // --- This is your new function that their version was missing ---
     suspend fun seedWorkouts(): Result<Unit> {
         return try {
             val userId = auth.currentUser?.uid ?: "system"
@@ -256,7 +258,7 @@ class SeedDataHelper {
                 return Result.failure(Exception("No exercises found. Run seedExercises() first."))
             }
 
-
+            // 2. Create the list of WorkoutExercise objects
             val workoutExercises = exercises.map { exercise ->
                 WorkoutExercise(
                     exerciseId = exercise.id,
@@ -267,7 +269,7 @@ class SeedDataHelper {
                 )
             }
 
-
+            // 3. Create the new Workout object
             val sampleWorkout = Workout(
                 name = "Beginner Strength",
                 description = "A great starting workout for building muscle.",
@@ -280,7 +282,7 @@ class SeedDataHelper {
                 isPublic = true
             )
 
-
+            // 4. Save the new workout to the "workouts" collection
             db.collection("workouts").add(sampleWorkout).await()
 
             Result.success(Unit)

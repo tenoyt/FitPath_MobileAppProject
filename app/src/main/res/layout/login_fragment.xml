@@ -8,19 +8,15 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="24dp"
-    android:background="?attr/colorSurface">
-
-    <TextView
-        android:id="@+id/loginTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:textColor="?attr/colorOnSurface"
-    android:textSize="32sp"
+    android:background="?attr/colorSurface"> <TextView
+    android:id="@+id/loginTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Login"
+    android:textColor="?attr/colorOnSurface" android:textSize="32sp"
     android:textStyle="bold"
     android:layout_marginBottom="32dp"
     android:gravity="center" />
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_layout"
@@ -34,9 +30,9 @@
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColor="?attr/colorOnSurface" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_layout"
@@ -51,7 +47,8 @@
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="?attr/colorOnSurface" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -60,11 +57,11 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:textColor="?attr/colorOnPrimary"
-    android:textAllCaps="false"
-    android:textSize="16sp"
-    app:cornerRadius="12dp"
-    app:backgroundTint="?attr/colorPrimary"
-    android:layout_marginBottom="16dp" />
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:cornerRadius="12dp"
+        app:backgroundTint="?attr/colorPrimary"
+        android:layout_marginBottom="16dp" />
 
     <TextView
         android:id="@+id/registerButton"
@@ -72,9 +69,9 @@
         android:layout_height="wrap_content"
         android:text="Create an Account"
         android:textColor="?attr/colorPrimary"
-    android:textSize="14sp"
-    android:layout_marginTop="8dp"
-    android:gravity="center" />
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:gravity="center" />
 
     <ProgressBar
         android:id="@+id/login_progress_bar"

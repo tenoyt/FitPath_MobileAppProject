@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.ImageButton
+import android.widget.ImageButton // <-- Make sure this is imported
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -18,7 +18,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-
+    // --- Declare all your UI elements ---
     private lateinit var loginBtn: Button
     private lateinit var welcomeText: TextView
     private lateinit var signOutBtn: Button
@@ -27,24 +27,27 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // --- INITIALIZE FIREBASE ---
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-
+        // --- FIND ALL UI VIEWS from your new XML ---
         loginBtn = view.findViewById(R.id.btnLoginRegister)
         welcomeText = view.findViewById(R.id.tvWelcome)
         signOutBtn = view.findViewById(R.id.btnSignOut)
         profileBtn = view.findViewById(R.id.btn_profile)
 
-
+        // (Your card listeners)
         view.findViewById<MaterialCardView>(R.id.cardLogWorkout).setOnClickListener {
+            // TODO: You will update this to navigate to the workout logger
             Toast.makeText(requireContext(), "Workout logging coming soon!", Toast.LENGTH_SHORT).show()
         }
         view.findViewById<MaterialCardView>(R.id.cardLogMeal).setOnClickListener {
+            // TODO: You will update this to navigate to the meal logger
             Toast.makeText(requireContext(), "Meal logging coming soon!", Toast.LENGTH_SHORT).show()
         }
 
-
+        // --- SET UP LISTENERS (They never change) ---
         loginBtn.setOnClickListener {
             findNavController().navigate(R.id.Login)
         }
@@ -55,13 +58,16 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             updateUI()
         }
 
-
         profileBtn.setOnClickListener {
+            // Find the BottomNavigationView in the parent Activity
+            val bottomNav = activity?.findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottom_navigation)
 
-            findNavController().navigate(R.id.settingsFragment)
+            // Tell the BottomNav to select the 'settings' tab
+            bottomNav?.selectedItemId = R.id.settings
         }
     }
 
+    // onStart() runs every time the fragment becomes visible
     override fun onStart() {
         super.onStart()
         updateUI()
@@ -76,14 +82,14 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             // --- User IS Logged In ---
             loginBtn.visibility = View.GONE
             signOutBtn.visibility = View.VISIBLE
-            profileBtn.visibility = View.VISIBLE // <-- RENAMED
+            profileBtn.visibility = View.VISIBLE
 
             fetchUsername(currentUser.uid)
         } else {
             // --- User is NOT Logged In ---
             loginBtn.visibility = View.VISIBLE
             signOutBtn.visibility = View.GONE
-            profileBtn.visibility = View.GONE // <-- RENAMED
+            profileBtn.visibility = View.GONE
 
             welcomeText.text = "Welcome Back"
         }
