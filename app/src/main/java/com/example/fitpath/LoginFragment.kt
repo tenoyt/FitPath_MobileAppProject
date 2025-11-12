@@ -15,7 +15,6 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: LoginFragmentBinding
     private lateinit var db: FirebaseFirestore
-
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
