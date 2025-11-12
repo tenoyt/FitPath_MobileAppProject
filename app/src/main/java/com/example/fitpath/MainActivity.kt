@@ -1,23 +1,27 @@
 package com.example.fitpath
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import com.example.fitpath.databinding.ActivityMainBinding
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
+// Inherit from BaseActivity for theme handling
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        // Get the NavHostFragment from the FragmentManager
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragment_container) as NavHostFragment
 
-        // Navigation controller for fragments
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // No ActionBar setup needed since we are using NoActionBar theme
+        // Get the NavController from the NavHostFragment
+        val navController = navHostFragment.navController
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        // Set up the BottomNavigationView with the NavController
+        bottomNavigationView.setupWithNavController(navController)
     }
 }
-

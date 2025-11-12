@@ -56,7 +56,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
+            requireActivity().recreate()
         }
+
 
         btnSaveProfile.setOnClickListener {
             prefs.edit()

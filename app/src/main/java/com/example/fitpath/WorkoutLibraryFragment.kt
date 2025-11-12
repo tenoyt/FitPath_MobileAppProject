@@ -8,6 +8,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController // <-- 1. IMPORT THIS
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitpath.adapter.WorkoutAdapter
@@ -55,10 +56,11 @@ class WorkoutLibraryFragment : Fragment() {
         loadWorkouts()
     }
 
+    // ... (keep setupRecyclerView, setupTabs, setupCategoryChips)
+
     private fun setupRecyclerView() {
         workoutAdapter = WorkoutAdapter(
             onWorkoutClick = { workout ->
-                // TODO: Navigate to workout detail when navigation is set up
                 Toast.makeText(requireContext(), "View workout: ${workout.name}", Toast.LENGTH_SHORT).show()
             },
             onFavoriteClick = { workout ->
@@ -97,6 +99,7 @@ class WorkoutLibraryFragment : Fragment() {
                 if (category == "All") isChecked = true
 
                 setOnClickListener {
+                    (chipGroup.getChildAt(0) as Chip).isChecked = category == "All"
                     if (category == "All") {
                         loadWorkouts()
                     } else {
@@ -108,13 +111,17 @@ class WorkoutLibraryFragment : Fragment() {
         }
     }
 
+
     private fun setupFab() {
+        // 2. CHANGE THE CLICK LISTENER
         fabCreate.setOnClickListener {
-            // TODO: Navigate to workout builder when navigation is set up
-            Toast.makeText(requireContext(), "Workout builder - coming soon!", Toast.LENGTH_SHORT).show()
+            // This assumes you have a navigation action defined in your nav_graph.xml
+            // with this ID that leads from WorkoutLibraryFragment to WorkoutBuilderFragment.
+            findNavController().navigate(R.id.action_workoutLibraryFragment_to_workoutBuilderFragment)
         }
     }
 
+    // ... (keep all the load and toggle functions)
     private fun loadWorkouts() {
         progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
@@ -165,6 +172,7 @@ class WorkoutLibraryFragment : Fragment() {
             }
         }
     }
+
 
     private fun loadWorkoutsByCategory(category: String) {
         progressBar.visibility = View.VISIBLE

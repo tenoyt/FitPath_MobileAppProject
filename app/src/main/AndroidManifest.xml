@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
@@ -15,15 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitPath.NoActionBar">
 
-        <!-- This is a regular activity -->
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.FitPath"/>
-
-        <!-- This is the main entry point for the app -->
-        <activity
-            android:name=".MainnActivity"
             android:exported="true"
             android:theme="@style/Theme.FitPath.NoActionBar">
             <intent-filter>
