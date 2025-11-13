@@ -31,8 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:textColor="?attr/colorOnSurface" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textColor="?attr/colorOnSurface" /> </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_layout"
@@ -48,28 +47,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:textColor="?attr/colorOnSurface" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textColor="?attr/colorOnSurface" /> </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:textColor="?attr/colorOnPrimary"
-        android:textAllCaps="false"
+        android:textColor="?attr/colorOnPrimary" android:textAllCaps="false"
         android:textSize="16sp"
         app:cornerRadius="12dp"
-        app:backgroundTint="?attr/colorPrimary"
-        android:layout_marginBottom="16dp" />
+        app:backgroundTint="?attr/colorPrimary" android:layout_marginBottom="16dp" />
 
     <TextView
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create an Account"
-        android:textColor="?attr/colorPrimary"
-        android:textSize="14sp"
+        android:textColor="?attr/colorPrimary" android:textSize="14sp"
         android:layout_marginTop="8dp"
         android:gravity="center" />
 

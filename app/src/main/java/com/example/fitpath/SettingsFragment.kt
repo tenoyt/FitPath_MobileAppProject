@@ -66,6 +66,7 @@ class SettingsFragment : Fragment() {
             prefs.darkMode = isChecked
             AppCompatDelegate.setDefaultNightMode(if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
             // No need to recreate(), MainActivity handles this on start
+
         }
 
         // --- MERGED: Seeder Button (Your correct version) ---

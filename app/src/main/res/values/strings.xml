@@ -8,8 +8,10 @@
 
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
     <string name="Dashboard">Dashboard</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">MapsActivity</string>
 
     <string-array name="workout_categories">
         <item>Strength</item>

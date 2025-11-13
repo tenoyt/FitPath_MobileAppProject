@@ -4,25 +4,37 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.ImageButton // <-- Make sure this is imported
+import android.widget.ImageButton // <-- Your profile button import
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.FirebaseAuth // <-- Your Firebase Auth
+import com.google.firebase.firestore.FirebaseFirestore // <-- Your Firestore
+import com.google.android.gms.maps.CameraUpdateFactory // <-- Their Map Imports
+import com.google.android.gms.maps.GoogleMap // <-- Their Map Imports
+import com.google.android.gms.maps.OnMapReadyCallback // <-- Their Map Imports
+import com.google.android.gms.maps.SupportMapFragment // <-- Their Map Imports
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
-class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
+// IMPORTANT: Implement OnMapReadyCallback for the map feature
+class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallback {
 
+    // --- YOUR AUTHENTICATION VARIABLES ---
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    // --- Declare all your UI elements ---
+    // --- YOUR UI ELEMENTS ---
     private lateinit var loginBtn: Button
     private lateinit var welcomeText: TextView
     private lateinit var signOutBtn: Button
     private lateinit var profileBtn: ImageButton
+
+    // --- THEIR MAP VARIABLE ---
+    private lateinit var mMap: GoogleMap
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,23 +43,30 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // --- FIND ALL UI VIEWS from your new XML ---
+        // --- FIND ALL UI VIEWS ---
         loginBtn = view.findViewById(R.id.btnLoginRegister)
         welcomeText = view.findViewById(R.id.tvWelcome)
         signOutBtn = view.findViewById(R.id.btnSignOut)
         profileBtn = view.findViewById(R.id.btn_profile)
 
-        // (Your card listeners)
+        // --- MAP INITIALIZATION (FROM THEIR VERSION) ---
+        // Find the map fragment and initialize the map
+        val mapFragment = childFragmentManager.findFragmentById(R.id.mapFragment) as? SupportMapFragment
+        mapFragment?.getMapAsync(this)
+
+        // Assuming your layout has cardMapView for the map container
+        view.findViewById<View>(R.id.cardMapView)?.visibility = View.VISIBLE
+
+        // --- YOUR CARD LISTENERS ---
         view.findViewById<MaterialCardView>(R.id.cardLogWorkout).setOnClickListener {
-            // TODO: You will update this to navigate to the workout logger
+            // Note: This needs to navigate to R.id.workoutBuilderFragment via Nav Graph
             Toast.makeText(requireContext(), "Workout logging coming soon!", Toast.LENGTH_SHORT).show()
         }
         view.findViewById<MaterialCardView>(R.id.cardLogMeal).setOnClickListener {
-            // TODO: You will update this to navigate to the meal logger
             Toast.makeText(requireContext(), "Meal logging coming soon!", Toast.LENGTH_SHORT).show()
         }
 
-        // --- SET UP LISTENERS (They never change) ---
+        // --- YOUR AUTH LISTENERS ---
         loginBtn.setOnClickListener {
             findNavController().navigate(R.id.Login)
         }
@@ -58,16 +77,28 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             updateUI()
         }
 
+        // --- YOUR PROFILE BUTTON (Synchronization Fix) ---
         profileBtn.setOnClickListener {
-            // Find the BottomNavigationView in the parent Activity
+            // Tell the BottomNav to select the 'settings' tab for sync
             val bottomNav = activity?.findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottom_navigation)
-
-            // Tell the BottomNav to select the 'settings' tab
             bottomNav?.selectedItemId = R.id.settings
         }
     }
 
-    // onStart() runs every time the fragment becomes visible
+    // --- MAP IMPLEMENTATION (THEIR REQUIRED CODE) ---
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        // Example: Add a marker
+        val defaultLocation = LatLng(-34.0, 151.0)
+        mMap.addMarker(MarkerOptions().position(defaultLocation).title("Start Location"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 12f))
+
+        // Optional: enable zoom controls
+        mMap.uiSettings.isZoomControlsEnabled = true
+    }
+
+    // --- YOUR UI STATE HANDLER ---
     override fun onStart() {
         super.onStart()
         updateUI()
@@ -75,7 +106,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun updateUI() {
         val currentUser = auth.currentUser
-
         welcomeText.visibility = View.VISIBLE
 
         if (currentUser != null) {
