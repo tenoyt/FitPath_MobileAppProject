@@ -25,7 +25,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private lateinit var remindersSwitch: Switch
     private lateinit var themeSwitch: Switch
 
-    // NEW: References for the actual UI components
+    // References for the actual UI components
     private lateinit var reminderTimeText: TextView
     private lateinit var pickTimeButton: Button
 
@@ -54,7 +54,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
     }
 
-    // --- THIS IS THE COMPLETELY REWRITTEN AND CORRECTED FUNCTION ---
     private fun setupReminderControls() {
         // 1. Set initial states from preferences
         remindersSwitch.isChecked = prefs.getRemindersEnabled()
@@ -72,7 +71,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             }
         }
 
-        // 3. Listener for the "Pick Time" button
+        // Listener for the "Pick Time" button
         pickTimeButton.setOnClickListener {
             showTimePickerDialog()
         }
@@ -85,7 +84,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         val timePickerDialog = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
-                // This block is called when the user confirms a new time
                 prefs.setReminderTime(hourOfDay, minute)
                 updateReminderTimeText() // Update the TextView
 
@@ -116,8 +114,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         reminderTimeText.text = String.format(Locale.getDefault(), "%d:%02d %s", displayHour, minute, amPm)
     }
 
-    // The scheduleReminder and cancelReminder functions below are correct and do not need changes.
-    // ...
     private fun scheduleReminder(hour: Int, minute: Int) {
         val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
 

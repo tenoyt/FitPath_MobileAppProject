@@ -3,6 +3,7 @@
     <!-- Basic Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="purple_500">#6200EE</color>
 
     <!-- Light Theme Palette -->
     <color name="light_primary">#3F51B5</color> <!-- A nice blue for primary elements -->

@@ -15,7 +15,7 @@ class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val message = intent.getStringExtra("message") ?: "Time for your workout"
 
-        // Step 1: Build and show the notification (your original code, which is correct)
+        // Build and show the notification
         val notification = NotificationCompat.Builder(context, "fitpath_reminders")
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle("FitPath Reminder")
@@ -25,7 +25,7 @@ class ReminderReceiver : BroadcastReceiver() {
             .build()
         NotificationManagerCompat.from(context).notify(1001, notification)
 
-        // Step 2: NEW - Re-schedule the alarm for the next day
+        // Re-schedule the alarm for the next day
         rescheduleNextAlarm(context)
     }
 
@@ -64,7 +64,7 @@ class ReminderReceiver : BroadcastReceiver() {
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
-            // Crucially, add one day to the current date to schedule for tomorrow
+            // Add one day to the current date to schedule for tomorrow
             add(Calendar.DAY_OF_YEAR, 1)
         }
 

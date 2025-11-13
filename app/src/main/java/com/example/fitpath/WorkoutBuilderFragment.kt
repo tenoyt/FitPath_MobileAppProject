@@ -25,7 +25,7 @@ class WorkoutBuilderFragment : Fragment() {
     // The list of exercises for the current workout being built. This is the source of truth.
     private val exercisesList = mutableListOf<WorkoutExercise>()
 
-    // The adapter for the RecyclerView.
+    // Adapter for the RecyclerView
     private lateinit var workoutExerciseAdapter: WorkoutExerciseAdapter
 
     override fun onCreateView(
@@ -39,7 +39,7 @@ class WorkoutBuilderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Define the functions that will handle clicks inside the adapter.
+        // Define the functions that will handle clicks inside the adapter
         val onEditClick = { position: Int ->
             val exercise = exercisesList[position]
             Toast.makeText(context, "TODO: Edit ${exercise.exerciseName}", Toast.LENGTH_SHORT).show()
@@ -53,10 +53,10 @@ class WorkoutBuilderFragment : Fragment() {
             Toast.makeText(context, "$exerciseName removed", Toast.LENGTH_SHORT).show()
         }
 
-        // 2. Initialize the adapter, passing it the list and the click handlers it requires.
+        // Initialize the adapter, passing it the list and the click handlers it requires
         workoutExerciseAdapter = WorkoutExerciseAdapter(exercisesList, onEditClick, onDeleteClick)
 
-        // 3. Setup the RecyclerView with the adapter.
+        // Setup the RecyclerView with the adapter
         binding.recyclerViewExercises.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = workoutExerciseAdapter
@@ -65,7 +65,7 @@ class WorkoutBuilderFragment : Fragment() {
         // Setup the UI elements
         setupSpinners()
 
-        // 4. Set up the button to add a new exercise.
+        // Set up the button to add a new exercise
         binding.btnAddExercise.setOnClickListener {
             Log.d("WorkoutBuilder", "Add Exercise button clicked.")
 
@@ -78,7 +78,7 @@ class WorkoutBuilderFragment : Fragment() {
                 notes = "Tap to edit details."
             )
 
-            // Add the new exercise to our list and notify the adapter.
+            // Add the new exercise to our list and notify the adapter
             exercisesList.add(dummyWorkoutExercise)
             workoutExerciseAdapter.notifyItemInserted(exercisesList.size - 1)
         }
@@ -126,7 +126,7 @@ class WorkoutBuilderFragment : Fragment() {
         val difficulty = binding.spinnerDifficulty.selectedItem.toString()
         val isPublic = binding.switchPublic.isChecked
 
-        // 5. Use the fragment's 'exercisesList' as the data to save.
+        // Use the fragment's 'exercisesList' as the data to save
         val exercisesToSave = exercisesList
 
         if (workoutName.isEmpty()) {
@@ -146,7 +146,7 @@ class WorkoutBuilderFragment : Fragment() {
             category = category,
             difficulty = difficulty,
             isPublic = isPublic,
-            createdBy = authorId, // Use the correct field name 'createdBy'
+            createdBy = authorId,
             exercises = exercisesToSave
         )
 
