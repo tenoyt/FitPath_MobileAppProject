@@ -18,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback // <-- Their Map Imports
 import com.google.android.gms.maps.SupportMapFragment // <-- Their Map Imports
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.example.fitpath.R
 
 // IMPORTANT: Implement OnMapReadyCallback for the map feature
 class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallback {
@@ -63,8 +64,15 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
             Toast.makeText(requireContext(), "Workout logging coming soon!", Toast.LENGTH_SHORT).show()
         }
         view.findViewById<MaterialCardView>(R.id.cardLogMeal).setOnClickListener {
-            Toast.makeText(requireContext(), "Meal logging coming soon!", Toast.LENGTH_SHORT).show()
+            Toast.makeText( requireContext(), "Meal logging coming soon!", Toast.LENGTH_SHORT).show()
         }
+
+        //community card
+        view.findViewById<MaterialCardView>(R.id.cardCommunity).setOnClickListener {
+            findNavController().navigate(R.id.communityFragment)
+
+        }
+
 
         // --- AUTH LISTENERS ---
         loginBtn.setOnClickListener {

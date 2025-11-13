@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:fitsSystemWindows="true"
     android:padding="24dp"
     android:background="?attr/colorSurface"> <TextView
     android:id="@+id/loginTitle"

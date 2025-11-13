@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.fitpath.databinding.LoginFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.example.fitpath.R
+
 
 class LoginFragment : Fragment() {
 
@@ -99,7 +101,7 @@ class LoginFragment : Fragment() {
                     Toast.makeText(requireContext(), "Login successful!", Toast.LENGTH_SHORT).show()
 
 
-                    findNavController().navigate(R.id.action_Login_to_main_content)
+                   findNavController().navigate(R.id.action_Login_to_dashboard)
                 } else {
                     Log.w(TAG, "Firebase signInWithEmailAndPassword failed: ${task.exception?.message}")
                     showLoading(false)
