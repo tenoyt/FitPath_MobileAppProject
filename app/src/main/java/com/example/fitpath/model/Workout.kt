@@ -1,5 +1,7 @@
 package com.example.fitpath.model
 
+import com.google.firebase.firestore.PropertyName
+
 data class Workout(
     val id: String = "",
     val name: String = "",
@@ -10,7 +12,12 @@ data class Workout(
     val durationMinutes: Int = 0,
     val createdBy: String = "", // User ID of creator
     val createdByName: String = "", // Display name of creator
-    val isPublic: Boolean = true,
+
+    // Map Firestore field "public" to Kotlin property "isPublic"
+    @get:PropertyName("public")
+    @set:PropertyName("public")
+    var isPublic: Boolean = true,
+
     val isFavorite: Boolean = false,
     val rating: Double = 0.0,
     val ratingCount: Int = 0,
