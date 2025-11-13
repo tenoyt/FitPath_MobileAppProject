@@ -1,6 +1,7 @@
 package com.example.fitpath
 
 import android.os.Bundle
+import android.view.View // Import the View class
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,5 +24,20 @@ class MainActivity : BaseActivity() {
 
         // Set up the BottomNavigationView with the NavController
         bottomNavigationView.setupWithNavController(navController)
+
+        // Add a listener to control BottomNavigationView visibility
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                // Add all destinations where the bottom nav should be hidden
+                R.id.Login,
+                R.id.Register -> {
+                    bottomNavigationView.visibility = View.GONE
+                }
+                // For all other destinations, make it visible
+                else -> {
+                    bottomNavigationView.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 }

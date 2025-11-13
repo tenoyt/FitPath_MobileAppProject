@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
 
 
     <application
@@ -17,7 +19,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FitPath.NoActionBar">
+        tools:targetApi="31"
+        android:theme="@style/Theme.FitPath">  <!-- ✅ CORRECTED: Changed from Theme.FitPath.NoActionBar -->
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -25,8 +28,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.FitPath.NoActionBar">
+            android:exported="true">
+            <!-- The theme is inherited from the application, no need to set it here again -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

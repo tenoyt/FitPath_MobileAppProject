@@ -1,9 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.FitPath" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- 1. Define the BASE theme for the application. -->
+    <style name="Base.Theme.FitPath" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color for LIGHT mode. -->
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryVariant">@color/light_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color for LIGHT mode. -->
+        <item name="colorSecondary">@color/light_accent</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondaryVariant">@color/light_accent</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <!-- Customize other theme attributes here. -->
+        <item name="android:windowBackground">@color/light_background</item>
+        <item name="android:textColor">@color/light_text_primary</item>
+        <item name="colorSurface">@color/light_card_background</item>
+
+        <!-- ✅ ADD THIS LINE to fix the crash -->
+        <item name="colorSurfaceVariant">#F0F0F0</item> <!-- A light gray for surface variants -->
+
     </style>
 
+    <!-- 2. Define the FINAL theme that the app will use. -->
     <style name="Theme.FitPath" parent="Base.Theme.FitPath" />
 </resources>
