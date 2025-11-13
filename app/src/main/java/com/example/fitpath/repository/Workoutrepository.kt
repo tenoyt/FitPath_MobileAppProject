@@ -4,7 +4,6 @@ import com.example.fitpath.model.Exercise
 import com.example.fitpath.model.Workout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 
 class WorkoutRepository {
@@ -21,11 +20,11 @@ class WorkoutRepository {
         return try {
             exercisesCollection
                 .whereEqualTo("isPublic", true)
-                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
                 .await()
                 .documents
                 .mapNotNull { it.toObject(Exercise::class.java)?.copy(id = it.id) }
+                .sortedByDescending { it.timestamp }
         } catch (e: Exception) {
             emptyList()
         }
@@ -86,13 +85,14 @@ class WorkoutRepository {
 
     suspend fun getAllPublicWorkouts(): List<Workout> {
         return try {
+            // FIXED: Query for "public" field (not "isPublic") to match Firebase structure
             workoutsCollection
-                .whereEqualTo("isPublic", true)
-                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .whereEqualTo("public", true)  // Changed from "isPublic" to "public"
                 .get()
                 .await()
                 .documents
                 .mapNotNull { it.toObject(Workout::class.java)?.copy(id = it.id) }
+                .sortedByDescending { it.timestamp }
         } catch (e: Exception) {
             emptyList()
         }
@@ -101,7 +101,7 @@ class WorkoutRepository {
     suspend fun getWorkoutsByCategory(category: String): List<Workout> {
         return try {
             workoutsCollection
-                .whereEqualTo("isPublic", true)
+                .whereEqualTo("public", true)  // Changed from "isPublic" to "public"
                 .whereEqualTo("category", category)
                 .get()
                 .await()
