@@ -18,21 +18,22 @@ import com.google.android.gms.maps.OnMapReadyCallback // <-- Their Map Imports
 import com.google.android.gms.maps.SupportMapFragment // <-- Their Map Imports
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.example.fitpath.R
 
 // IMPORTANT: Implement OnMapReadyCallback for the map feature
 class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallback {
 
-    // --- YOUR AUTHENTICATION VARIABLES ---
+    // --- AUTHENTICATION VARIABLES ---
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    // --- YOUR UI ELEMENTS ---
+    // --- UI ELEMENTS ---
     private lateinit var loginBtn: Button
     private lateinit var welcomeText: TextView
     private lateinit var signOutBtn: Button
     private lateinit var profileBtn: ImageButton
 
-    // --- THEIR MAP VARIABLE ---
+    // --- MAP VARIABLE ---
     private lateinit var mMap: GoogleMap
 
 
@@ -49,24 +50,31 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
         signOutBtn = view.findViewById(R.id.btnSignOut)
         profileBtn = view.findViewById(R.id.btn_profile)
 
-        // --- MAP INITIALIZATION (FROM THEIR VERSION) ---
+        // --- MAP INITIALIZATION ---
         // Find the map fragment and initialize the map
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapFragment) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
 
-        // Assuming your layout has cardMapView for the map container
+        // Assuming layout has cardMapView for the map container
         view.findViewById<View>(R.id.cardMapView)?.visibility = View.VISIBLE
 
-        // --- YOUR CARD LISTENERS ---
+        // --- CARD LISTENERS ---
         view.findViewById<MaterialCardView>(R.id.cardLogWorkout).setOnClickListener {
             // Note: This needs to navigate to R.id.workoutBuilderFragment via Nav Graph
             Toast.makeText(requireContext(), "Workout logging coming soon!", Toast.LENGTH_SHORT).show()
         }
         view.findViewById<MaterialCardView>(R.id.cardLogMeal).setOnClickListener {
-            Toast.makeText(requireContext(), "Meal logging coming soon!", Toast.LENGTH_SHORT).show()
+            Toast.makeText( requireContext(), "Meal logging coming soon!", Toast.LENGTH_SHORT).show()
         }
 
-        // --- YOUR AUTH LISTENERS ---
+        //community card
+        view.findViewById<MaterialCardView>(R.id.cardCommunity).setOnClickListener {
+            findNavController().navigate(R.id.communityFragment)
+
+        }
+
+
+        // --- AUTH LISTENERS ---
         loginBtn.setOnClickListener {
             findNavController().navigate(R.id.Login)
         }
@@ -77,7 +85,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
             updateUI()
         }
 
-        // --- YOUR PROFILE BUTTON (Synchronization Fix) ---
+        // --- PROFILE BUTTON (Synchronization Fix) ---
         profileBtn.setOnClickListener {
             // Tell the BottomNav to select the 'settings' tab for sync
             val bottomNav = activity?.findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottom_navigation)
@@ -85,7 +93,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
         }
     }
 
-    // --- MAP IMPLEMENTATION (THEIR REQUIRED CODE) ---
+    // --- MAP IMPLEMENTATION ---
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
@@ -98,7 +106,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
         mMap.uiSettings.isZoomControlsEnabled = true
     }
 
-    // --- YOUR UI STATE HANDLER ---
+    // --- UI STATE HANDLER ---
     override fun onStart() {
         super.onStart()
         updateUI()

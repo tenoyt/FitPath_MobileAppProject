@@ -10,7 +10,6 @@ class FitnessApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // This is your theme logic (they just used a different variable name)
         val prefs = Prefs(this)
         val useDark = prefs.darkMode
         if (useDark) {
@@ -19,12 +18,11 @@ class FitnessApplication : Application() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
 
-        // This is their new, important function for notifications
         createNotificationChannel()
     }
 
     private fun createNotificationChannel() {
-        // This only runs on Android 8.0 (Oreo) and higher
+        // This only runs on Android 8.0 and higher
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 "fitpath_reminders", // Channel ID

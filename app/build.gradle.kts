@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.gms.google-services") // Needed for Firebase & Maps
+    id("com.google.gms.google-services")
+    alias(libs.plugins.secrets.gradle.plugin) // Needed for Firebase & Maps
 }
 
 android {
