@@ -46,7 +46,7 @@
             android:id="@+id/action_dashboard_to_communityFragment"
             app:destination="@id/communityFragment" />
 
-        <!-- Navigate to Workout Library (For Log Workout Card) -->
+        <!-- FIXED: Navigate to Workout Library (For Log Workout Card) -->
         <action
             android:id="@+id/action_dashboardFragment_to_workoutLibraryFragment"
             app:destination="@id/workoutLibrary" />
@@ -72,7 +72,7 @@
             app:popUpToInclusive="true"/>
     </fragment>
 
-    <!-- Profile Settings (New) -->
+    <!-- Profile Settings -->
     <fragment
         android:id="@+id/profileSettingsFragment"
         android:name="com.example.fitpath.ProfileSettingsFragment"
@@ -85,10 +85,24 @@
         android:name="com.example.fitpath.WorkoutLibraryFragment"
         android:label="Workout Library"
         tools:layout="@layout/fragment_workout_library">
+
+        <!-- Navigate to Workout Builder -->
         <action
             android:id="@+id/action_workoutLibraryFragment_to_workoutBuilderFragment"
             app:destination="@id/workoutBuilderFragment" />
+
+        <!-- ADDED: Navigate to Workout Detail -->
+        <action
+            android:id="@+id/action_workoutLibraryFragment_to_workoutDetailFragment"
+            app:destination="@id/workoutDetailFragment" />
     </fragment>
+
+    <!-- Workout Detail Fragment (ADDED) -->
+    <fragment
+        android:id="@+id/workoutDetailFragment"
+        android:name="com.example.fitpath.WorkoutDetailFragment"
+        android:label="Workout Details"
+        tools:layout="@layout/fragment_workout_detail" />
 
     <!-- Workout Builder -->
     <fragment
@@ -101,7 +115,7 @@
     <fragment
         android:id="@+id/communityFragment"
         android:name="com.example.fitpath.CommunityFragment"
-        android:label="fragment_community"
+        android:label="Community"
         tools:layout="@layout/fragment_community" />
 
 </navigation>

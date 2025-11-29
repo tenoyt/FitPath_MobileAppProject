@@ -27,12 +27,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyArU7F3WeEbSZpZ5ajEybc-ugnucIeMteo" />
 
-        <!-- Maps Activity -->
-        <activity
-            android:name=".MapsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_maps" />
-
         <!-- Main Activity -->
         <activity
             android:name=".MainActivity"

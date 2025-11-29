@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -75,8 +76,14 @@ class WorkoutLibraryFragment : Fragment() {
         Log.d(TAG, "Setting up RecyclerView")
         workoutAdapter = WorkoutAdapter(
             onWorkoutClick = { workout ->
-                Log.d(TAG, "Workout clicked: ${workout.name}")
-                Toast.makeText(requireContext(), "View workout: ${workout.name}", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "Workout clicked: ${workout.name}, ID: ${workout.id}")
+
+                // Navigate to workout detail screen
+                val bundle = bundleOf("workoutId" to workout.id)
+                findNavController().navigate(
+                    R.id.action_workoutLibraryFragment_to_workoutDetailFragment,
+                    bundle
+                )
             },
             onFavoriteClick = { workout ->
                 Log.d(TAG, "Favorite clicked: ${workout.name}")
@@ -166,7 +173,7 @@ class WorkoutLibraryFragment : Fragment() {
                 Log.d(TAG, "Repository returned ${workouts.size} workouts")
 
                 workouts.forEachIndexed { index, workout ->
-                    Log.d(TAG, "Workout $index: ${workout.name}, isPublic=${workout.isPublic}")
+                    Log.d(TAG, "Workout $index: ${workout.name}, ID: ${workout.id}, isPublic=${workout.isPublic}")
                 }
 
                 Log.d(TAG, "Submitting workouts to adapter")

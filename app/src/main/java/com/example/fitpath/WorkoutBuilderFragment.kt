@@ -1,5 +1,6 @@
 package com.example.fitpath
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.example.fitpath.adapter.WorkoutExerciseAdapter
 import com.example.fitpath.databinding.FragmentWorkoutBuilderBinding
 import com.example.fitpath.model.Workout
 import com.example.fitpath.model.WorkoutExercise
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -41,8 +43,7 @@ class WorkoutBuilderFragment : Fragment() {
 
         // Define the functions that will handle clicks inside the adapter
         val onEditClick = { position: Int ->
-            val exercise = exercisesList[position]
-            Toast.makeText(context, "TODO: Edit ${exercise.exerciseName}", Toast.LENGTH_SHORT).show()
+            showEditExerciseDialog(position)
         }
 
         val onDeleteClick = { position: Int ->
@@ -108,6 +109,70 @@ class WorkoutBuilderFragment : Fragment() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.spinnerDifficulty.adapter = adapter
         }
+    }
+
+    private fun showEditExerciseDialog(position: Int) {
+        val exercise = exercisesList[position]
+
+        // Inflate the dialog layout
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_exercise, null)
+
+        // Get references to input fields
+        val etName = dialogView.findViewById<TextInputEditText>(R.id.etExerciseName)
+        val etSets = dialogView.findViewById<TextInputEditText>(R.id.etSets)
+        val etReps = dialogView.findViewById<TextInputEditText>(R.id.etReps)
+        val etDuration = dialogView.findViewById<TextInputEditText>(R.id.etDuration)
+        val etRest = dialogView.findViewById<TextInputEditText>(R.id.etRest)
+        val etNotes = dialogView.findViewById<TextInputEditText>(R.id.etNotes)
+
+        // Pre-fill with current values
+        etName.setText(exercise.exerciseName)
+        etSets.setText(exercise.sets.toString())
+        etReps.setText(exercise.reps.toString())
+        etDuration.setText(exercise.duration.toString())
+        etRest.setText(exercise.restTime.toString())
+        etNotes.setText(exercise.notes)
+
+        // Create and show dialog
+        AlertDialog.Builder(requireContext())
+            .setTitle("Edit Exercise")
+            .setView(dialogView)
+            .setPositiveButton("Save") { dialog, _ ->
+                val name = etName.text.toString().trim()
+
+                if (name.isEmpty()) {
+                    Toast.makeText(context, "Exercise name cannot be empty", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+
+                // Get values with defaults
+                val sets = etSets.text.toString().toIntOrNull() ?: 0
+                val reps = etReps.text.toString().toIntOrNull() ?: 0
+                val duration = etDuration.text.toString().toIntOrNull() ?: 0
+                val rest = etRest.text.toString().toIntOrNull() ?: 0
+                val notes = etNotes.text.toString().trim()
+
+                // Update the exercise in the list
+                exercisesList[position] = WorkoutExercise(
+                    exerciseId = exercise.exerciseId,
+                    exerciseName = name,
+                    sets = sets,
+                    reps = reps,
+                    duration = duration,
+                    restTime = rest,
+                    notes = notes
+                )
+
+                // Notify adapter
+                workoutExerciseAdapter.notifyItemChanged(position)
+
+                Toast.makeText(context, "Exercise updated", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun saveWorkout() {

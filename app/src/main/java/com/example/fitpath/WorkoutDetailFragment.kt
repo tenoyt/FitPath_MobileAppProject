@@ -112,15 +112,16 @@ class WorkoutDetailFragment : Fragment() {
                     btnEdit.visibility = if (isOwnWorkout) View.VISIBLE else View.GONE
                     btnDelete.visibility = if (isOwnWorkout) View.VISIBLE else View.GONE
 
-                    // Setup exercises RecyclerView
+                    // Setup exercises RecyclerView - READ-ONLY (no edit/delete buttons)
                     val exerciseAdapter = WorkoutExerciseAdapter(
                         exercises = workout.exercises.toMutableList(),
                         onEditClick = { position ->
-                            Toast.makeText(requireContext(), "Edit not available in detail view", Toast.LENGTH_SHORT).show()
+                            // No-op - exercises are read-only in detail view
                         },
                         onDeleteClick = { position ->
-                            Toast.makeText(requireContext(), "Delete not available in detail view", Toast.LENGTH_SHORT).show()
-                        }
+                            // No-op - exercises are read-only in detail view
+                        },
+                        showEditDelete = false  // HIDE edit/delete buttons in detail view
                     )
 
                     recyclerViewExercises.apply {
@@ -141,7 +142,7 @@ class WorkoutDetailFragment : Fragment() {
 
     private fun editWorkout() {
         // TODO: Navigate to edit screen with workout data
-        Toast.makeText(requireContext(), "Edit workout: ${currentWorkout?.name}\n(Navigate to edit screen)", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Edit workout: ${currentWorkout?.name}\n(Full edit mode coming soon)", Toast.LENGTH_SHORT).show()
         // You can navigate to WorkoutBuilderFragment in edit mode
         // val bundle = bundleOf("workoutId" to workoutId, "editMode" to true)
         // findNavController().navigate(R.id.action_to_workoutBuilder, bundle)
