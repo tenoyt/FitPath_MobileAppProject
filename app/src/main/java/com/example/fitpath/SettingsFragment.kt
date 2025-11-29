@@ -2,7 +2,7 @@ package com.example.fitpath
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.app.TimePickerDialog // Import TimePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
@@ -11,13 +11,15 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.widget.Button // Import Button
+import android.widget.Button
 import android.widget.Switch
-import android.widget.TextView // Import TextView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
-import java.util.Locale // Import Locale
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import java.util.Locale
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
@@ -41,6 +43,23 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         setupThemeSwitch()
         setupReminderControls()
+        setupAccountControls(view)
+    }
+
+    private fun setupAccountControls(view: View) {
+        // Navigate to Profile Settings
+        val btnAccountSettings = view.findViewById<Button>(R.id.btnAccountSettings)
+        btnAccountSettings.setOnClickListener {
+            findNavController().navigate(R.id.action_settingsFragment_to_profileSettingsFragment)
+        }
+
+        // Logout Logic
+        val btnLogout = view.findViewById<Button>(R.id.btnLogout)
+        btnLogout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            // Navigate back to login and clear the back stack
+            findNavController().navigate(R.id.action_settingsFragment_to_loginFragment)
+        }
     }
 
     private fun setupThemeSwitch() {
@@ -55,11 +74,11 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun setupReminderControls() {
-        // 1. Set initial states from preferences
+        // Set initial states from preferences
         remindersSwitch.isChecked = prefs.getRemindersEnabled()
         updateReminderTimeText()
 
-        // 2. Listener for the enable/disable switch
+        // Listener for the enable/disable switch
         remindersSwitch.setOnCheckedChangeListener { _, isChecked ->
             prefs.setRemindersEnabled(isChecked)
             if (isChecked) {
