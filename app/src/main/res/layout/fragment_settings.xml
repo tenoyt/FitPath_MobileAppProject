@@ -11,6 +11,7 @@
         android:padding="16dp"
         tools:context=".SettingsFragment">
 
+        <!-- Theme Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,26 +32,28 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"/>
 
+        <!-- Account Section (Updated) -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Profile"
+            android:text="Account"
             android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/et_settings_username"
+        <Button
+            android:id="@+id/btnAccountSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="username"
-            android:enabled="false" />
+            android:text="Edit Profile Settings"
+            android:layout_marginTop="8dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
-        <EditText
-            android:id="@+id/et_settings_email"
+        <Button
+            android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
-            android:enabled="false"
-            android:layout_marginTop="8dp" />
+            android:text="Log Out"
+            android:textColor="@android:color/holo_red_light"
+            style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
         <View
             android:layout_width="match_parent"
@@ -59,6 +62,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"/>
 
+        <!-- Privacy Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,6 +82,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"/>
 
+        <!-- Reminders Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,6 +122,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"/>
 
+        <!-- Seed Data Section -->
         <Button
             android:id="@+id/btnSeedData"
             android:layout_width="match_parent"
