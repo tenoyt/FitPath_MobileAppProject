@@ -9,15 +9,18 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fitpath.adapter.WorkoutExerciseAdapter
 import com.example.fitpath.databinding.FragmentWorkoutBuilderBinding
 import com.example.fitpath.model.Workout
 import com.example.fitpath.model.WorkoutExercise
+import com.example.fitpath.repository.WorkoutRepository
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
 
 class WorkoutBuilderFragment : Fragment() {
 
@@ -30,6 +33,11 @@ class WorkoutBuilderFragment : Fragment() {
     // Adapter for the RecyclerView
     private lateinit var workoutExerciseAdapter: WorkoutExerciseAdapter
 
+    // Edit mode variables
+    private var isEditMode = false
+    private var editWorkoutId: String? = null
+    private val repository = WorkoutRepository()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +49,10 @@ class WorkoutBuilderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Check if we're in edit mode
+        editWorkoutId = arguments?.getString("workoutId")
+        isEditMode = editWorkoutId != null
+
         // Define the functions that will handle clicks inside the adapter
         val onEditClick = { position: Int ->
             showEditExerciseDialog(position)
@@ -48,16 +60,16 @@ class WorkoutBuilderFragment : Fragment() {
 
         val onDeleteClick = { position: Int ->
             val exerciseName = exercisesList[position].exerciseName
-            exercisesList.removeAt(position) // Remove from the source of truth
-            workoutExerciseAdapter.notifyItemRemoved(position) // Tell the adapter to animate the removal
-            workoutExerciseAdapter.notifyItemRangeChanged(position, exercisesList.size) // Update subsequent item positions
+            exercisesList.removeAt(position)
+            workoutExerciseAdapter.notifyItemRemoved(position)
+            workoutExerciseAdapter.notifyItemRangeChanged(position, exercisesList.size)
             Toast.makeText(context, "$exerciseName removed", Toast.LENGTH_SHORT).show()
         }
 
-        // Initialize the adapter, passing it the list and the click handlers it requires
+        // Initialize the adapter
         workoutExerciseAdapter = WorkoutExerciseAdapter(exercisesList, onEditClick, onDeleteClick)
 
-        // Setup the RecyclerView with the adapter
+        // Setup the RecyclerView
         binding.recyclerViewExercises.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = workoutExerciseAdapter
@@ -66,11 +78,14 @@ class WorkoutBuilderFragment : Fragment() {
         // Setup the UI elements
         setupSpinners()
 
+        // If edit mode, load existing workout
+        if (isEditMode) {
+            loadWorkoutForEdit()
+            binding.btnSaveWorkout.text = "UPDATE WORKOUT"
+        }
+
         // Set up the button to add a new exercise
         binding.btnAddExercise.setOnClickListener {
-            Log.d("WorkoutBuilder", "Add Exercise button clicked.")
-
-            // Create a placeholder exercise.
             val dummyWorkoutExercise = WorkoutExercise(
                 exerciseName = "New Exercise",
                 sets = 3,
@@ -78,14 +93,62 @@ class WorkoutBuilderFragment : Fragment() {
                 restTime = 60,
                 notes = "Tap to edit details."
             )
-
-            // Add the new exercise to our list and notify the adapter
             exercisesList.add(dummyWorkoutExercise)
             workoutExerciseAdapter.notifyItemInserted(exercisesList.size - 1)
         }
 
         binding.btnSaveWorkout.setOnClickListener {
-            saveWorkout()
+            if (isEditMode) {
+                updateWorkout()
+            } else {
+                saveWorkout()
+            }
+        }
+    }
+
+    private fun loadWorkoutForEdit() {
+        binding.progressBar.visibility = View.VISIBLE
+
+        lifecycleScope.launch {
+            try {
+                val workout = repository.getWorkoutById(editWorkoutId ?: "")
+
+                if (workout != null) {
+                    // Pre-fill form fields
+                    binding.editTextWorkoutName.setText(workout.name)
+                    binding.editTextDescription.setText(workout.description)
+                    binding.switchPublic.isChecked = workout.isPublic
+
+                    // Set category spinner
+                    val categories = resources.getStringArray(R.array.workout_categories)
+                    val categoryPosition = categories.indexOf(workout.category)
+                    if (categoryPosition >= 0) {
+                        binding.spinnerCategory.setSelection(categoryPosition)
+                    }
+
+                    // Set difficulty spinner
+                    val difficulties = resources.getStringArray(R.array.workout_difficulties)
+                    val difficultyPosition = difficulties.indexOf(workout.difficulty)
+                    if (difficultyPosition >= 0) {
+                        binding.spinnerDifficulty.setSelection(difficultyPosition)
+                    }
+
+                    // Load exercises
+                    exercisesList.clear()
+                    exercisesList.addAll(workout.exercises)
+                    workoutExerciseAdapter.notifyDataSetChanged()
+
+                    Toast.makeText(context, "Loaded workout for editing", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Failed to load workout", Toast.LENGTH_SHORT).show()
+                    findNavController().popBackStack()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            } finally {
+                binding.progressBar.visibility = View.GONE
+            }
         }
     }
 
@@ -175,6 +238,63 @@ class WorkoutBuilderFragment : Fragment() {
             .show()
     }
 
+    private fun updateWorkout() {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val authorId = firebaseAuth.currentUser?.uid
+
+        if (authorId == null) {
+            Toast.makeText(context, "Error: User not logged in.", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val workoutName = binding.editTextWorkoutName.text.toString().trim()
+        val description = binding.editTextDescription.text.toString().trim()
+        val category = binding.spinnerCategory.selectedItem.toString()
+        val difficulty = binding.spinnerDifficulty.selectedItem.toString()
+        val isPublic = binding.switchPublic.isChecked
+
+        if (workoutName.isEmpty()) {
+            Toast.makeText(context, "Workout name cannot be empty.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (exercisesList.isEmpty()) {
+            Toast.makeText(context, "A workout must have at least one exercise.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        binding.progressBar.visibility = View.VISIBLE
+
+        lifecycleScope.launch {
+            try {
+                val updatedWorkout = Workout(
+                    id = editWorkoutId ?: "",
+                    name = workoutName,
+                    description = description,
+                    category = category,
+                    difficulty = difficulty,
+                    isPublic = isPublic,
+                    createdBy = authorId,
+                    exercises = exercisesList
+                )
+
+                val result = repository.updateWorkout(editWorkoutId ?: "", updatedWorkout)
+
+                if (result.isSuccess) {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(context, "Workout updated successfully!", Toast.LENGTH_SHORT).show()
+                    findNavController().popBackStack()
+                } else {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(context, "Failed to update workout", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                binding.progressBar.visibility = View.GONE
+                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                Log.e("WorkoutBuilder", "Error updating workout", e)
+            }
+        }
+    }
+
     private fun saveWorkout() {
         val firebaseAuth = FirebaseAuth.getInstance()
         val firestore = FirebaseFirestore.getInstance()
@@ -191,14 +311,11 @@ class WorkoutBuilderFragment : Fragment() {
         val difficulty = binding.spinnerDifficulty.selectedItem.toString()
         val isPublic = binding.switchPublic.isChecked
 
-        // Use the fragment's 'exercisesList' as the data to save
-        val exercisesToSave = exercisesList
-
         if (workoutName.isEmpty()) {
             Toast.makeText(context, "Workout name cannot be empty.", Toast.LENGTH_SHORT).show()
             return
         }
-        if (exercisesToSave.isEmpty()) {
+        if (exercisesList.isEmpty()) {
             Toast.makeText(context, "A workout must have at least one exercise.", Toast.LENGTH_SHORT).show()
             return
         }
@@ -212,7 +329,7 @@ class WorkoutBuilderFragment : Fragment() {
             difficulty = difficulty,
             isPublic = isPublic,
             createdBy = authorId,
-            exercises = exercisesToSave
+            exercises = exercisesList
         )
 
         firestore.collection("workouts").add(newWorkout)

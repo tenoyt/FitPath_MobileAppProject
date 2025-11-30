@@ -46,7 +46,7 @@
             android:id="@+id/action_dashboard_to_communityFragment"
             app:destination="@id/communityFragment" />
 
-        <!-- FIXED: Navigate to Workout Library (For Log Workout Card) -->
+        <!-- Navigate to Workout Library -->
         <action
             android:id="@+id/action_dashboardFragment_to_workoutLibraryFragment"
             app:destination="@id/workoutLibrary" />
@@ -86,23 +86,29 @@
         android:label="Workout Library"
         tools:layout="@layout/fragment_workout_library">
 
-        <!-- Navigate to Workout Builder -->
+        <!-- Navigate to Workout Builder (Create) -->
         <action
             android:id="@+id/action_workoutLibraryFragment_to_workoutBuilderFragment"
             app:destination="@id/workoutBuilderFragment" />
 
-        <!-- ADDED: Navigate to Workout Detail -->
+        <!-- Navigate to Workout Detail -->
         <action
             android:id="@+id/action_workoutLibraryFragment_to_workoutDetailFragment"
             app:destination="@id/workoutDetailFragment" />
     </fragment>
 
-    <!-- Workout Detail Fragment (ADDED) -->
+    <!-- Workout Detail Fragment -->
     <fragment
         android:id="@+id/workoutDetailFragment"
         android:name="com.example.fitpath.WorkoutDetailFragment"
         android:label="Workout Details"
-        tools:layout="@layout/fragment_workout_detail" />
+        tools:layout="@layout/fragment_workout_detail">
+
+        <!-- NEW: Navigate to Workout Builder (Edit Mode) -->
+        <action
+            android:id="@+id/action_workoutDetailFragment_to_workoutBuilderFragment"
+            app:destination="@id/workoutBuilderFragment" />
+    </fragment>
 
     <!-- Workout Builder -->
     <fragment

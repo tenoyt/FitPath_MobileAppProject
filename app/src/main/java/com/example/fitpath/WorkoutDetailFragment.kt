@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -141,11 +142,18 @@ class WorkoutDetailFragment : Fragment() {
     }
 
     private fun editWorkout() {
-        // TODO: Navigate to edit screen with workout data
-        Toast.makeText(requireContext(), "Edit workout: ${currentWorkout?.name}\n(Full edit mode coming soon)", Toast.LENGTH_SHORT).show()
-        // You can navigate to WorkoutBuilderFragment in edit mode
-        // val bundle = bundleOf("workoutId" to workoutId, "editMode" to true)
-        // findNavController().navigate(R.id.action_to_workoutBuilder, bundle)
+        // WORKAROUND: Navigate using the existing action from library to builder
+        // Pass the workoutId to enable edit mode
+        val bundle = bundleOf("workoutId" to workoutId)
+
+        // First go back to library
+        findNavController().navigateUp()
+
+        // Then navigate to builder with workoutId (this uses existing action)
+        findNavController().navigate(
+            R.id.action_workoutLibraryFragment_to_workoutBuilderFragment,
+            bundle
+        )
     }
 
     private fun confirmDeleteWorkout() {
