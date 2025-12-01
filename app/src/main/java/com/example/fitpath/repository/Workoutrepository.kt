@@ -4,6 +4,7 @@ import com.example.fitpath.model.Exercise
 import com.example.fitpath.model.Workout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 
 class WorkoutRepository {
@@ -85,14 +86,27 @@ class WorkoutRepository {
 
     suspend fun getAllPublicWorkouts(): List<Workout> {
         return try {
-            // FIXED: Query for "public" field (not "isPublic") to match Firebase structure
-            workoutsCollection
-                .whereEqualTo("public", true)  // Changed from "isPublic" to "public"
+            val userId = auth.currentUser?.uid
+
+            // FIXED: Changed "isPublic" to "public" to match Firebase field name
+            // FIXED: Removed .orderBy() to avoid needing Firestore composite index
+            val workouts = workoutsCollection
+                .whereEqualTo("public", true)
                 .get()
                 .await()
                 .documents
                 .mapNotNull { it.toObject(Workout::class.java)?.copy(id = it.id) }
-                .sortedByDescending { it.timestamp }
+                .sortedByDescending { it.timestamp }  // Sort in memory instead
+
+            // Check favorite status for each workout
+            if (userId != null) {
+                val favoriteIds = getFavoriteWorkoutIds(userId)
+                return workouts.map { workout ->
+                    workout.copy(isFavorite = favoriteIds.contains(workout.id))
+                }
+            }
+
+            workouts
         } catch (e: Exception) {
             emptyList()
         }
@@ -100,13 +114,26 @@ class WorkoutRepository {
 
     suspend fun getWorkoutsByCategory(category: String): List<Workout> {
         return try {
-            workoutsCollection
-                .whereEqualTo("public", true)  // Changed from "isPublic" to "public"
+            val userId = auth.currentUser?.uid
+
+            // FIXED: Changed "isPublic" to "public"
+            val workouts = workoutsCollection
+                .whereEqualTo("public", true)
                 .whereEqualTo("category", category)
                 .get()
                 .await()
                 .documents
                 .mapNotNull { it.toObject(Workout::class.java)?.copy(id = it.id) }
+
+            // Check favorite status
+            if (userId != null) {
+                val favoriteIds = getFavoriteWorkoutIds(userId)
+                return workouts.map { workout ->
+                    workout.copy(isFavorite = favoriteIds.contains(workout.id))
+                }
+            }
+
+            workouts
         } catch (e: Exception) {
             emptyList()
         }
@@ -114,11 +141,20 @@ class WorkoutRepository {
 
     suspend fun getWorkoutById(workoutId: String): Workout? {
         return try {
-            workoutsCollection
+            val workout = workoutsCollection
                 .document(workoutId)
                 .get()
                 .await()
                 .toObject(Workout::class.java)?.copy(id = workoutId)
+
+            // Check if it's favorited
+            val userId = auth.currentUser?.uid
+            if (workout != null && userId != null) {
+                val isFavorited = checkIfFavorited(userId, workoutId)
+                return workout.copy(isFavorite = isFavorited)
+            }
+
+            workout
         } catch (e: Exception) {
             null
         }
@@ -162,12 +198,18 @@ class WorkoutRepository {
     suspend fun getUserWorkouts(): List<Workout> {
         val userId = auth.currentUser?.uid ?: return emptyList()
         return try {
-            workoutsCollection
+            val workouts = workoutsCollection
                 .whereEqualTo("createdBy", userId)
                 .get()
                 .await()
                 .documents
                 .mapNotNull { it.toObject(Workout::class.java)?.copy(id = it.id) }
+
+            // Check favorite status
+            val favoriteIds = getFavoriteWorkoutIds(userId)
+            workouts.map { workout ->
+                workout.copy(isFavorite = favoriteIds.contains(workout.id))
+            }
         } catch (e: Exception) {
             emptyList()
         }
@@ -182,9 +224,40 @@ class WorkoutRepository {
                 .get()
                 .await()
                 .documents
-                .mapNotNull { it.toObject(Workout::class.java)?.copy(id = it.id) }
+                .mapNotNull { it.toObject(Workout::class.java)?.copy(id = it.id, isFavorite = true) }
         } catch (e: Exception) {
             emptyList()
+        }
+    }
+
+    // Helper function to get list of favorited workout IDs
+    private suspend fun getFavoriteWorkoutIds(userId: String): Set<String> {
+        return try {
+            userWorkoutsCollection
+                .document(userId)
+                .collection("favorites")
+                .get()
+                .await()
+                .documents
+                .map { it.id }
+                .toSet()
+        } catch (e: Exception) {
+            emptySet()
+        }
+    }
+
+    // Helper function to check if a specific workout is favorited
+    private suspend fun checkIfFavorited(userId: String, workoutId: String): Boolean {
+        return try {
+            val doc = userWorkoutsCollection
+                .document(userId)
+                .collection("favorites")
+                .document(workoutId)
+                .get()
+                .await()
+            doc.exists()
+        } catch (e: Exception) {
+            false
         }
     }
 

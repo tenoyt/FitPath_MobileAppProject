@@ -13,7 +13,8 @@ import com.google.android.material.card.MaterialCardView
 class WorkoutExerciseAdapter(
     private val exercises: MutableList<WorkoutExercise>,
     private val onEditClick: (Int) -> Unit,
-    private val onDeleteClick: (Int) -> Unit
+    private val onDeleteClick: (Int) -> Unit,
+    private val showEditDelete: Boolean = true  // NEW: Control visibility of edit/delete buttons
 ) : RecyclerView.Adapter<WorkoutExerciseAdapter.ExerciseViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
@@ -61,12 +62,21 @@ class WorkoutExerciseAdapter(
                 textNotes?.visibility = View.GONE
             }
 
-            btnEdit?.setOnClickListener {
-                onEditClick(adapterPosition)
-            }
+            // Show/hide edit and delete buttons based on showEditDelete parameter
+            if (showEditDelete) {
+                btnEdit?.visibility = View.VISIBLE
+                btnDelete?.visibility = View.VISIBLE
 
-            btnDelete?.setOnClickListener {
-                onDeleteClick(adapterPosition)
+                btnEdit?.setOnClickListener {
+                    onEditClick(adapterPosition)
+                }
+
+                btnDelete?.setOnClickListener {
+                    onDeleteClick(adapterPosition)
+                }
+            } else {
+                btnEdit?.visibility = View.GONE
+                btnDelete?.visibility = View.GONE
             }
         }
     }
