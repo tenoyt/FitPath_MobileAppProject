@@ -1,5 +1,7 @@
 package com.example.fitpath
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -7,8 +9,11 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -31,8 +36,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
     private lateinit var signOutBtn: Button
     private lateinit var profileBtn: ImageButton
 
-    // --- MAP VARIABLE ---
+    // --- MAP-RELATED VARIABLES ---
     private lateinit var mMap: GoogleMap
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,6 +46,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
         // --- INITIALIZE FIREBASE ---
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+
+        // --- INITIALIZE LOCATION CLIENT ---
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         // --- FIND ALL UI VIEWS ---
         loginBtn = view.findViewById(R.id.btnLoginRegister)
@@ -66,8 +75,13 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
         }
 
         // 3. Community -> Goes to Community Fragment
-        view.findViewById<MaterialCardView>(R.id.cardCommunity).setOnClickListener {
-            findNavController().navigate(R.id.communityFragment)
+       view.findViewById<MaterialCardView>(R.id.cardCommunity).setOnClickListener {
+            findNavController().navigate(R.id.action_dashboard_to_communityFragment)
+       }
+
+        // 4. Start a Run -> Goes to Run Fragment
+        view.findViewById<MaterialCardView>(R.id.cardStartRun).setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_runFragment)
         }
 
         // --- AUTH LISTENERS ---
@@ -93,13 +107,28 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
     // --- MAP IMPLEMENTATION ---
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
-        // Example: Add a marker for a default location (e.g., Sydney)
-        val defaultLocation = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(defaultLocation).title("Start Location"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 12f))
-
         mMap.uiSettings.isZoomControlsEnabled = true
+
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.isMyLocationEnabled = true
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                if (location != null) {
+                    val currentLatLng = LatLng(location.latitude, location.longitude)
+                    mMap.addMarker(MarkerOptions().position(currentLatLng).title("Current Location"))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                } else {
+                    // Fallback to default location if last location is not available
+                    val defaultLocation = LatLng(-34.0, 151.0)
+                    mMap.addMarker(MarkerOptions().position(defaultLocation).title("Start Location"))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 12f))
+                }
+            }
+        } else {
+            // Fallback to default location if permission is not granted
+            val defaultLocation = LatLng(-34.0, 151.0)
+            mMap.addMarker(MarkerOptions().position(defaultLocation).title("Start Location"))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 12f))
+        }
     }
 
     // --- UI STATE HANDLER ---

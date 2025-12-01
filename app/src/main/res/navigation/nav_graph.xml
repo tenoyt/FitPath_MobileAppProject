@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_workoutLibraryFragment"
             app:destination="@id/workoutLibrary" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_runFragment"
+            app:destination="@id/runFragment" />
     </fragment>
 
     <!-- Settings Fragment -->
@@ -101,7 +104,14 @@
     <fragment
         android:id="@+id/communityFragment"
         android:name="com.example.fitpath.CommunityFragment"
-        android:label="fragment_community"
+        android:label="Community"
         tools:layout="@layout/fragment_community" />
+
+    <!-- Run Fragment -->
+    <fragment
+        android:id="@+id/runFragment"
+        android:name="com.example.fitpath.RunFragment"
+        android:label="Run"
+        tools:layout="@layout/fragment_run" />
 
 </navigation>
