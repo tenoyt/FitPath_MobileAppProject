@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Your existing colors -->
+    <!-- Basic Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="background_light">#F5F5F7</color>
-    <color name="card_background">#FFFFFF</color>
-    <color name="text_primary">#1D1D1F</color>
-    <color name="text_secondary">#6E6E73</color>
-    <color name="accent_color">#007AFF</color>
+    <color name="purple_500">#6200EE</color>
 
-    <!-- ADD THIS NEW DARK PALETTE -->
-    <color name="background_dark">#121212</color>       <!-- A standard dark background -->
-    <color name="card_background_dark">#1E1E1E</color>  <!-- Slightly lighter for cards -->
-    <color name="text_primary_dark">#E1E1E1</color>    <!-- Off-white for primary text -->
-    <color name="text_secondary_dark">#9E9E9E</color>  <!-- Gray for secondary text -->
+    <!-- Light Theme Palette -->
+    <color name="light_primary">#3F51B5</color> <!-- A nice blue for primary elements -->
+    <color name="light_primary_dark">#303F9F</color> <!-- A darker shade for status bars -->
+    <color name="light_accent">#FF4081</color> <!-- A pink for accents like FABs -->
+    <color name="light_background">#FAFAFA</color> <!-- A slightly off-white background -->
+    <color name="light_card_background">#FFFFFF</color> <!-- White for cards -->
+    <color name="light_text_primary">#212121</color> <!-- Dark grey for primary text -->
+    <color name="light_text_secondary">#757575</color> <!-- Lighter grey for secondary text -->
 
+    <!-- Dark Theme Palette -->
+    <color name="dark_primary">#7986CB</color> <!-- A lighter blue for dark mode -->
+    <color name="dark_primary_dark">#5C6BC0</color>
+    <color name="dark_accent">#F06292</color> <!-- A lighter pink -->
+    <color name="dark_background">#121212</color> <!-- Standard dark background -->
+    <color name="dark_card_background">#1E1E1E</color> <!-- Slightly lighter dark for cards -->
+    <color name="dark_text_primary">#FFFFFF</color> <!-- White for primary text -->
+    <color name="dark_text_secondary">#BDBDBD</color> <!-- Grey for secondary text -->
 </resources>
-

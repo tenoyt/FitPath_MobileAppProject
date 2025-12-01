@@ -1,14 +1,26 @@
-<resources xmlns:tools="http://schemas.android.com/tools"><!-- Base application theme for dark mode. -->
-    <style name="Theme.FitnessApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/accent_color</item>
-        <item name="colorOnPrimary">@color/white</item>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme for DARK mode. -->
+    <style name="Base.Theme.FitPath" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color for DARK mode. -->
+        <item name="colorPrimary">@color/dark_primary</item>
+        <item name="colorPrimaryVariant">@color/dark_primary_dark</item>
+        <item name="colorOnPrimary">@color/black</item>
 
-        <!-- Background color for dark mode. -->
-        <item name="android:windowBackground">@color/background_dark</item>
+        <!-- Secondary brand color for DARK mode. -->
+        <item name="colorSecondary">@color/dark_accent</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondaryVariant">@color/dark_accent</item>
 
-        <!-- Text colors for dark mode -->
-        <item name="android:textColorPrimary">@color/text_primary_dark</item>
-        <item name="android:textColorSecondary">@color/text_secondary_dark</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="android:textColor">@color/dark_text_primary</item>
+        <item name="colorSurface">@color/dark_card_background</item>
+
+        <item name="colorSurfaceVariant">#3A3A3A</item> <!-- A muted gray for surface variants in dark theme -->
+
     </style>
+
+    <style name="Theme.FitPath" parent="Base.Theme.FitPath" />
 </resources>

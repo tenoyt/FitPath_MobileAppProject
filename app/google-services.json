@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "5843157731",
+    "project_id": "fitpath-fde3f",
+    "storage_bucket": "fitpath-fde3f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5843157731:android:7d9550ccc86220a8243bd6",
+        "android_client_info": {
+          "package_name": "com.example.fitpath"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhQahLH0nvAi9LxKS_ivD6Q0_0zzHlaSI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
