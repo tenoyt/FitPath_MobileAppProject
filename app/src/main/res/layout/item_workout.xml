@@ -67,26 +67,26 @@
                 android:id="@+id/textCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/chip_background"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
                 android:text="Full Body"
-                android:textSize="12sp"
-                android:textColor="@color/white"
-                android:layout_marginEnd="8dp" />
+                android:textColor="@color/black"
+                android:textSize="12sp" />
 
             <!-- Difficulty -->
             <TextView
                 android:id="@+id/textDifficulty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/chip_background"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
                 android:text="Beginner"
-                android:textSize="12sp"
-                android:textColor="@color/white"
-                android:layout_marginEnd="8dp" />
+                android:textColor="@color/black"
+                android:textSize="12sp" />
 
             <!-- Duration -->
             <TextView

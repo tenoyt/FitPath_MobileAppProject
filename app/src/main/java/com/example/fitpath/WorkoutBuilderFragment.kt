@@ -27,10 +27,7 @@ class WorkoutBuilderFragment : Fragment() {
     private var _binding: FragmentWorkoutBuilderBinding? = null
     private val binding get() = _binding!!
 
-    // The list of exercises for the current workout being built. This is the source of truth.
     private val exercisesList = mutableListOf<WorkoutExercise>()
-
-    // Adapter for the RecyclerView
     private lateinit var workoutExerciseAdapter: WorkoutExerciseAdapter
 
     // Edit mode variables
@@ -53,7 +50,9 @@ class WorkoutBuilderFragment : Fragment() {
         editWorkoutId = arguments?.getString("workoutId")
         isEditMode = editWorkoutId != null
 
-        // Define the functions that will handle clicks inside the adapter
+        Log.d("WorkoutBuilder", "Edit mode: $isEditMode, workoutId: $editWorkoutId")
+
+        // Define click handlers for adapter
         val onEditClick = { position: Int ->
             showEditExerciseDialog(position)
         }
@@ -66,25 +65,25 @@ class WorkoutBuilderFragment : Fragment() {
             Toast.makeText(context, "$exerciseName removed", Toast.LENGTH_SHORT).show()
         }
 
-        // Initialize the adapter
+        // Initialize adapter
         workoutExerciseAdapter = WorkoutExerciseAdapter(exercisesList, onEditClick, onDeleteClick)
 
-        // Setup the RecyclerView
+        // Setup RecyclerView
         binding.recyclerViewExercises.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = workoutExerciseAdapter
         }
 
-        // Setup the UI elements
+        // Setup spinners
         setupSpinners()
 
-        // If edit mode, load existing workout
+        // Load workout if in edit mode
         if (isEditMode) {
             loadWorkoutForEdit()
             binding.btnSaveWorkout.text = "UPDATE WORKOUT"
         }
 
-        // Set up the button to add a new exercise
+        // Add exercise button
         binding.btnAddExercise.setOnClickListener {
             val dummyWorkoutExercise = WorkoutExercise(
                 exerciseName = "New Exercise",
@@ -97,6 +96,7 @@ class WorkoutBuilderFragment : Fragment() {
             workoutExerciseAdapter.notifyItemInserted(exercisesList.size - 1)
         }
 
+        // Save/Update button
         binding.btnSaveWorkout.setOnClickListener {
             if (isEditMode) {
                 updateWorkout()
@@ -144,6 +144,7 @@ class WorkoutBuilderFragment : Fragment() {
                     findNavController().popBackStack()
                 }
             } catch (e: Exception) {
+                Log.e("WorkoutBuilder", "Error loading workout", e)
                 Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             } finally {
@@ -177,10 +178,8 @@ class WorkoutBuilderFragment : Fragment() {
     private fun showEditExerciseDialog(position: Int) {
         val exercise = exercisesList[position]
 
-        // Inflate the dialog layout
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_exercise, null)
 
-        // Get references to input fields
         val etName = dialogView.findViewById<TextInputEditText>(R.id.etExerciseName)
         val etSets = dialogView.findViewById<TextInputEditText>(R.id.etSets)
         val etReps = dialogView.findViewById<TextInputEditText>(R.id.etReps)
@@ -188,7 +187,6 @@ class WorkoutBuilderFragment : Fragment() {
         val etRest = dialogView.findViewById<TextInputEditText>(R.id.etRest)
         val etNotes = dialogView.findViewById<TextInputEditText>(R.id.etNotes)
 
-        // Pre-fill with current values
         etName.setText(exercise.exerciseName)
         etSets.setText(exercise.sets.toString())
         etReps.setText(exercise.reps.toString())
@@ -196,7 +194,6 @@ class WorkoutBuilderFragment : Fragment() {
         etRest.setText(exercise.restTime.toString())
         etNotes.setText(exercise.notes)
 
-        // Create and show dialog
         AlertDialog.Builder(requireContext())
             .setTitle("Edit Exercise")
             .setView(dialogView)
@@ -208,14 +205,12 @@ class WorkoutBuilderFragment : Fragment() {
                     return@setPositiveButton
                 }
 
-                // Get values with defaults
                 val sets = etSets.text.toString().toIntOrNull() ?: 0
                 val reps = etReps.text.toString().toIntOrNull() ?: 0
                 val duration = etDuration.text.toString().toIntOrNull() ?: 0
                 val rest = etRest.text.toString().toIntOrNull() ?: 0
                 val notes = etNotes.text.toString().trim()
 
-                // Update the exercise in the list
                 exercisesList[position] = WorkoutExercise(
                     exerciseId = exercise.exerciseId,
                     exerciseName = name,
@@ -226,9 +221,7 @@ class WorkoutBuilderFragment : Fragment() {
                     notes = notes
                 )
 
-                // Notify adapter
                 workoutExerciseAdapter.notifyItemChanged(position)
-
                 Toast.makeText(context, "Exercise updated", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
