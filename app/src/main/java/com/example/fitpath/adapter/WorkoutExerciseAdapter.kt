@@ -13,7 +13,8 @@ import com.google.android.material.card.MaterialCardView
 class WorkoutExerciseAdapter(
     private val exercises: MutableList<WorkoutExercise>,
     private val onEditClick: (Int) -> Unit,
-    private val onDeleteClick: (Int) -> Unit
+    private val onDeleteClick: (Int) -> Unit,
+    private val showEditDelete: Boolean = true  // Control visibility of edit/delete buttons
 ) : RecyclerView.Adapter<WorkoutExerciseAdapter.ExerciseViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
@@ -26,6 +27,7 @@ class WorkoutExerciseAdapter(
         holder.bind(exercises[position], position)
     }
 
+    // Add a method to update the list
     override fun getItemCount() = exercises.size
 
     inner class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -36,6 +38,7 @@ class WorkoutExerciseAdapter(
         private val btnEdit: ImageButton? = itemView.findViewById(R.id.btnEdit)
         private val btnDelete: ImageButton? = itemView.findViewById(R.id.btnDelete)
 
+        // Bind data to the view
         fun bind(exercise: WorkoutExercise, position: Int) {
             textName?.text = "${position + 1}. ${exercise.exerciseName}"
 
@@ -61,12 +64,21 @@ class WorkoutExerciseAdapter(
                 textNotes?.visibility = View.GONE
             }
 
-            btnEdit?.setOnClickListener {
-                onEditClick(adapterPosition)
-            }
+            // Show/hide edit and delete buttons based on showEditDelete parameter
+            if (showEditDelete) {
+                btnEdit?.visibility = View.VISIBLE
+                btnDelete?.visibility = View.VISIBLE
 
-            btnDelete?.setOnClickListener {
-                onDeleteClick(adapterPosition)
+                btnEdit?.setOnClickListener {
+                    onEditClick(adapterPosition)
+                }
+
+                btnDelete?.setOnClickListener {
+                    onDeleteClick(adapterPosition)
+                }
+            } else {
+                btnEdit?.visibility = View.GONE
+                btnDelete?.visibility = View.GONE
             }
         }
     }

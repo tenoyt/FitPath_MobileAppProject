@@ -15,8 +15,7 @@ class WorkoutRepository {
     private val workoutsCollection = db.collection("workouts")
     private val userWorkoutsCollection = db.collection("user_workouts")
 
-    // ===== EXERCISE OPERATIONS =====
-
+    // Exercise Operations
     suspend fun getAllPublicExercises(): List<Exercise> {
         return try {
             exercisesCollection
@@ -82,14 +81,11 @@ class WorkoutRepository {
         }
     }
 
-    // ===== WORKOUT OPERATIONS =====
+    // Workout Operations
 
     suspend fun getAllPublicWorkouts(): List<Workout> {
         return try {
             val userId = auth.currentUser?.uid
-
-            // FIXED: Changed "isPublic" to "public" to match Firebase field name
-            // FIXED: Removed .orderBy() to avoid needing Firestore composite index
             val workouts = workoutsCollection
                 .whereEqualTo("public", true)
                 .get()
@@ -115,8 +111,6 @@ class WorkoutRepository {
     suspend fun getWorkoutsByCategory(category: String): List<Workout> {
         return try {
             val userId = auth.currentUser?.uid
-
-            // FIXED: Changed "isPublic" to "public"
             val workouts = workoutsCollection
                 .whereEqualTo("public", true)
                 .whereEqualTo("category", category)

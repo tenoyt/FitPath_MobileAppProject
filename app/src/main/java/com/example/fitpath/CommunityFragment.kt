@@ -62,6 +62,7 @@ class CommunityFragment : Fragment(R.layout.fragment_community) {
             }
     }
 
+    // Load friends from Firestore
     private fun loadFriends() {
         val currentUser = auth.currentUser
         if (currentUser != null) {

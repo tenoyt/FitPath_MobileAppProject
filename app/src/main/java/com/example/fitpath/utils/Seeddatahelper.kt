@@ -11,6 +11,7 @@ class SeedDataHelper {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
+    // Seed exercises into the "exercises" collection
     suspend fun seedExercises(): Result<Unit> {
         return try {
             val userId = auth.currentUser?.uid ?: "system"
@@ -239,13 +240,12 @@ class SeedDataHelper {
         }
     }
 
-    // --- This is your new function that their version was missing ---
     suspend fun seedWorkouts(): Result<Unit> {
         return try {
             val userId = auth.currentUser?.uid ?: "system"
             val userName = auth.currentUser?.displayName ?: "System"
 
-            // 1. Get a few exercises to put in the workout
+            // Get a few exercises to put in the workout
             val exercises = db.collection("exercises")
                 .whereEqualTo("category", "Strength")
                 .limit(3) // Get 3 strength exercises
@@ -258,7 +258,7 @@ class SeedDataHelper {
                 return Result.failure(Exception("No exercises found. Run seedExercises() first."))
             }
 
-            // 2. Create the list of WorkoutExercise objects
+            // Create the list of WorkoutExercise objects
             val workoutExercises = exercises.map { exercise ->
                 WorkoutExercise(
                     exerciseId = exercise.id,
@@ -269,7 +269,7 @@ class SeedDataHelper {
                 )
             }
 
-            // 3. Create the new Workout object
+            // Create the new Workout object
             val sampleWorkout = Workout(
                 name = "Beginner Strength",
                 description = "A great starting workout for building muscle.",
@@ -282,7 +282,7 @@ class SeedDataHelper {
                 isPublic = true
             )
 
-            // 4. Save the new workout to the "workouts" collection
+            // Save the new workout to the "workouts" collection
             db.collection("workouts").add(sampleWorkout).await()
 
             Result.success(Unit)

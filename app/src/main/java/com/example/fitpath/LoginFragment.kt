@@ -36,6 +36,7 @@ class LoginFragment : Fragment() {
             loginUser()
         }
 
+        // Navigate to RegisterFragment
         binding.registerButton.setOnClickListener {
             findNavController().navigate(R.id.action_Login_to_Register)
         }
@@ -43,6 +44,7 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+    // Handle login button click
     private fun loginUser() {
         val identifier = binding.emailEditText.text.toString().trim() // This can be email OR username
         val password = binding.passwordEditText.text.toString().trim()
@@ -63,6 +65,7 @@ class LoginFragment : Fragment() {
         }
     }
 
+    // Find the email associated with the given username
     private fun findEmailForUsername(username: String, password: String) {
         Log.d(TAG, "Attempting to find email for username: $username")
 
@@ -93,6 +96,7 @@ class LoginFragment : Fragment() {
             }
     }
 
+    // Sign in with Firebase
     private fun signInWithFirebase(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -110,6 +114,7 @@ class LoginFragment : Fragment() {
             }
     }
 
+    // Show/hide loading
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.loginProgressBar.visibility = View.VISIBLE

@@ -8,22 +8,22 @@ data class Workout(
     val description: String = "",
     val exercises: List<WorkoutExercise> = emptyList(),
     val category: String = "", // e.g., "Full Body", "Upper Body", "Lower Body"
-    val difficulty: String = "", // "Beginner", "Intermediate", "Advanced"
+    val difficulty: String = "", // e.g., "Beginner", "Intermediate", "Advanced"
     val durationMinutes: Int = 0,
     val createdBy: String = "", // User ID of creator
     val createdByName: String = "", // Display name of creator
 
-    // Map Firestore field "public" to Kotlin property "isPublic"
+    // Public or private workout
     @get:PropertyName("public")
     @set:PropertyName("public")
     var isPublic: Boolean = true,
-
     val isFavorite: Boolean = false,
     val rating: Double = 0.0,
     val ratingCount: Int = 0,
     val timestamp: Long = System.currentTimeMillis()
 )
 
+// Exercise model
 data class WorkoutExercise(
     val exerciseId: String = "",
     val exerciseName: String = "",

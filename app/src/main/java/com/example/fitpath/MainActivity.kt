@@ -13,16 +13,13 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Get the NavHostFragment from the FragmentManager
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragment_container) as NavHostFragment
 
-        // Get the NavController from the NavHostFragment
         val navController = navHostFragment.navController
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        // Set up the BottomNavigationView with the NavController
         bottomNavigationView.setupWithNavController(navController)
 
         // Add a listener to control BottomNavigationView visibility

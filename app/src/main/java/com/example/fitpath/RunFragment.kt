@@ -118,7 +118,6 @@ class RunFragment : Fragment(R.layout.fragment_run) {
         isRunning = false
         btnToggleRun.text = "Start Run"
         btnFinishRun.visibility = View.GONE
-        // TODO: Save run data
     }
 
     private fun updateTimer() {
@@ -135,7 +134,6 @@ class RunFragment : Fragment(R.layout.fragment_run) {
     private fun updateUI() {
         tvDistance.text = String.format("Distance: %.2fkm", distance / 1000)
         val pace = if (distance > 0) (System.currentTimeMillis() - startTime) / distance else 0
-        // FIX: Corrected the typo from MILLISECEEDINGS to MILLISECONDS
         tvPace.text = String.format("Pace: %d'%02d''",
             TimeUnit.MILLISECONDS.toMinutes(pace.toLong()),
             TimeUnit.MILLISECONDS.toSeconds(pace.toLong()) % 60)

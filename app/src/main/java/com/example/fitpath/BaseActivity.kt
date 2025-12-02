@@ -1,4 +1,4 @@
-package com.example.fitpath // Make sure this package name is correct for your project
+package com.example.fitpath
 
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +20,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
         // Check if the night mode has actually changed
         if (newNightMode != currentNightMode) {
-            // If it has, recreate the activity to apply the new theme
             recreate()
         }
     }

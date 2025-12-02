@@ -27,7 +27,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private lateinit var remindersSwitch: Switch
     private lateinit var themeSwitch: Switch
 
-    // References for the actual UI components
+    // References for the UI components
     private lateinit var reminderTimeText: TextView
     private lateinit var pickTimeButton: Button
 
@@ -35,7 +35,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onViewCreated(view, savedInstanceState)
         prefs = Prefs(requireContext())
 
-        // Correctly find views by their IDs from your XML
+        // Initialize UI components
         remindersSwitch = view.findViewById(R.id.switchReminders)
         themeSwitch = view.findViewById(R.id.switchTheme)
         reminderTimeText = view.findViewById(R.id.tvReminderTime)
@@ -57,7 +57,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
         btnLogout.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
-            // Navigate back to login and clear the back stack
+            // Navigate back to login
             findNavController().navigate(R.id.action_settingsFragment_to_loginFragment)
         }
     }
@@ -121,7 +121,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private fun updateReminderTimeText() {
         val hour = prefs.getReminderHour()
         val minute = prefs.getReminderMinute()
-        // Format the time to display correctly (e.g., 09:05 AM)
+        // Format the time to display correctly
         val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)

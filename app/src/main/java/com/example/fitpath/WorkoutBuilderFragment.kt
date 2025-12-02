@@ -288,6 +288,7 @@ class WorkoutBuilderFragment : Fragment() {
         }
     }
 
+    // Save workout logic
     private fun saveWorkout() {
         val firebaseAuth = FirebaseAuth.getInstance()
         val firestore = FirebaseFirestore.getInstance()

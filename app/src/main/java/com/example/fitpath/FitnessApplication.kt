@@ -17,16 +17,14 @@ class FitnessApplication : Application() {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
-
         createNotificationChannel()
     }
 
     private fun createNotificationChannel() {
-        // This only runs on Android 8.0 and higher
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                "fitpath_reminders", // Channel ID
-                "Reminders", // Channel Name
+                "fitpath_reminders",
+                "Reminders",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             channel.description = "Daily reminder notifications"

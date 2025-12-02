@@ -112,7 +112,7 @@
             android:name="workoutId"
             app:argType="string" />
 
-        <!-- ADDED: Navigate to Workout Builder for Edit Mode -->
+        <!-- Navigate to Workout Builder for Edit Mode -->
         <action
             android:id="@+id/action_workoutDetailFragment_to_workoutBuilderFragment"
             app:destination="@id/workoutBuilderFragment" />
@@ -125,7 +125,7 @@
         android:label="Build a Workout"
         tools:layout="@layout/fragment_workout_builder">
 
-        <!-- Optional: Argument for edit mode -->
+        <!-- Argument for edit mode -->
         <argument
             android:name="workoutId"
             app:argType="string"

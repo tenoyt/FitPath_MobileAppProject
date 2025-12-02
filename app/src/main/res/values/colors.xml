@@ -6,20 +6,20 @@
     <color name="purple_500">#6200EE</color>
 
     <!-- Light Theme Palette -->
-    <color name="light_primary">#3F51B5</color> <!-- A nice blue for primary elements -->
-    <color name="light_primary_dark">#303F9F</color> <!-- A darker shade for status bars -->
-    <color name="light_accent">#FF4081</color> <!-- A pink for accents like FABs -->
-    <color name="light_background">#FAFAFA</color> <!-- A slightly off-white background -->
-    <color name="light_card_background">#FFFFFF</color> <!-- White for cards -->
-    <color name="light_text_primary">#212121</color> <!-- Dark grey for primary text -->
-    <color name="light_text_secondary">#757575</color> <!-- Lighter grey for secondary text -->
+    <color name="light_primary">#3F51B5</color>
+    <color name="light_primary_dark">#303F9F</color>
+    <color name="light_accent">#FF4081</color>
+    <color name="light_background">#FAFAFA</color>
+    <color name="light_card_background">#FFFFFF</color>
+    <color name="light_text_primary">#212121</color>
+    <color name="light_text_secondary">#757575</color>
 
     <!-- Dark Theme Palette -->
-    <color name="dark_primary">#7986CB</color> <!-- A lighter blue for dark mode -->
+    <color name="dark_primary">#7986CB</color>
     <color name="dark_primary_dark">#5C6BC0</color>
-    <color name="dark_accent">#F06292</color> <!-- A lighter pink -->
-    <color name="dark_background">#121212</color> <!-- Standard dark background -->
-    <color name="dark_card_background">#1E1E1E</color> <!-- Slightly lighter dark for cards -->
-    <color name="dark_text_primary">#FFFFFF</color> <!-- White for primary text -->
-    <color name="dark_text_secondary">#BDBDBD</color> <!-- Grey for secondary text -->
+    <color name="dark_accent">#F06292</color>
+    <color name="dark_background">#121212</color>
+    <color name="dark_card_background">#1E1E1E</color>
+    <color name="dark_text_primary">#FFFFFF</color>
+    <color name="dark_text_secondary">#BDBDBD</color>
 </resources>

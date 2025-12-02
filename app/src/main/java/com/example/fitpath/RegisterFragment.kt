@@ -27,7 +27,7 @@ class RegisterFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
 
         binding.registerButton.setOnClickListener {
-            registerUser() // We moved the logic to a new function
+            registerUser()
         }
 
         binding.loginButton.setOnClickListener {
@@ -113,7 +113,7 @@ class RegisterFragment : Fragment() {
                             }
                     }
                 } else {
-                    // Auth creation failed (e.g., email already in use)
+                    // Handle registration failure (e.g., email already in use)
                     showLoading(false)
                     Toast.makeText(requireContext(), "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }

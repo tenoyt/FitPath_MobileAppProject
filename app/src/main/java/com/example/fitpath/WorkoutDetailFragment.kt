@@ -78,7 +78,6 @@ class WorkoutDetailFragment : Fragment() {
 
         btnStartWorkout.setOnClickListener {
             Toast.makeText(requireContext(), "Starting workout...", Toast.LENGTH_SHORT).show()
-            // TODO: Navigate to workout execution screen
         }
 
         btnEdit.setOnClickListener {
@@ -113,16 +112,13 @@ class WorkoutDetailFragment : Fragment() {
                     btnEdit.visibility = if (isOwnWorkout) View.VISIBLE else View.GONE
                     btnDelete.visibility = if (isOwnWorkout) View.VISIBLE else View.GONE
 
-                    // Setup exercises RecyclerView - READ-ONLY (no edit/delete buttons)
                     val exerciseAdapter = WorkoutExerciseAdapter(
                         exercises = workout.exercises.toMutableList(),
                         onEditClick = { position ->
-                            // No-op - exercises are read-only in detail view
                         },
                         onDeleteClick = { position ->
-                            // No-op - exercises are read-only in detail view
                         },
-                        showEditDelete = false  // HIDE edit/delete buttons in detail view
+                        showEditDelete = false  // Hide edit/delete buttons in detail view
                     )
 
                     recyclerViewExercises.apply {
@@ -142,14 +138,11 @@ class WorkoutDetailFragment : Fragment() {
     }
 
     private fun editWorkout() {
-        // WORKAROUND: Navigate using the existing action from library to builder
         // Pass the workoutId to enable edit mode
         val bundle = bundleOf("workoutId" to workoutId)
 
-        // First go back to library
         findNavController().navigateUp()
 
-        // Then navigate to builder with workoutId (this uses existing action)
         findNavController().navigate(
             R.id.action_workoutLibraryFragment_to_workoutBuilderFragment,
             bundle
@@ -169,6 +162,7 @@ class WorkoutDetailFragment : Fragment() {
             .show()
     }
 
+    // Delete workout logic
     private fun deleteWorkout() {
         progressBar.visibility = View.VISIBLE
 

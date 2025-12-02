@@ -80,12 +80,11 @@ class ProfileSettingsFragment : Fragment() {
         progressBar.visibility = View.VISIBLE
         btnSave.isEnabled = false
 
-        // 1. Re-authenticate user
+        // Re-authenticate user
         val credential = EmailAuthProvider.getCredential(user.email!!, currentPass)
 
         user.reauthenticate(credential).addOnCompleteListener { reauthTask ->
             if (reauthTask.isSuccessful) {
-                // Re-auth success, proceed with updates
 
                 // Update Email if changed
                 if (newEmail != user.email) {
