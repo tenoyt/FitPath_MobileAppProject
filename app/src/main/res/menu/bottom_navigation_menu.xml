@@ -4,16 +4,16 @@
     <item
         android:id="@+id/dashboard"
         android:icon="@drawable/ic_dashboard"
-    android:title="Dashboard" />
+        android:title="Dashboard" />
 
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings"
-    android:title="Settings" />
+        android:title="Settings" />
 
     <item
-        android:id="@+id/workoutLibrary"
+        android:id="@+id/workoutLibraryFragment"
         android:icon="@drawable/ic_workout"
-    android:title="Workouts" />
+        android:title="Workouts" />
 
 </menu>
