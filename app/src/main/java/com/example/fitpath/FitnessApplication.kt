@@ -22,7 +22,6 @@ class FitnessApplication : Application() {
     }
 
     private fun createNotificationChannel() {
-        // This only runs on Android 8.0 and higher
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 "fitpath_reminders", // Channel ID

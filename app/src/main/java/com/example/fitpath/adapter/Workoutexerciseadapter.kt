@@ -14,7 +14,7 @@ class WorkoutExerciseAdapter(
     private val exercises: MutableList<WorkoutExercise>,
     private val onEditClick: (Int) -> Unit,
     private val onDeleteClick: (Int) -> Unit,
-    private val showEditDelete: Boolean = true  // NEW: Control visibility of edit/delete buttons
+    private val showEditDelete: Boolean = true  // Control visibility of edit/delete buttons
 ) : RecyclerView.Adapter<WorkoutExerciseAdapter.ExerciseViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {

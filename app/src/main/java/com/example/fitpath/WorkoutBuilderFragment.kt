@@ -27,10 +27,9 @@ class WorkoutBuilderFragment : Fragment() {
     private var _binding: FragmentWorkoutBuilderBinding? = null
     private val binding get() = _binding!!
 
-    // The list of exercises for the current workout being built. This is the source of truth.
+    // The list of exercises for the current workout being built
     private val exercisesList = mutableListOf<WorkoutExercise>()
 
-    // Adapter for the RecyclerView
     private lateinit var workoutExerciseAdapter: WorkoutExerciseAdapter
 
     // Edit mode variables

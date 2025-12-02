@@ -33,7 +33,7 @@ class MainActivity : BaseActivity() {
                 R.id.Register -> {
                     bottomNavigationView.visibility = View.GONE
                 }
-                // For all other destinations, make it visible
+                // All other destinations visible
                 else -> {
                     bottomNavigationView.visibility = View.VISIBLE
                 }

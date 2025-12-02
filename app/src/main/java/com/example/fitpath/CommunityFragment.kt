@@ -26,7 +26,7 @@ class CommunityFragment : Fragment(R.layout.fragment_community) {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = UserAdapter(users) { user ->
-            // Handle user click (e.g., add friend)
+            // Handle user click
         }
         recyclerView.adapter = adapter
 
@@ -45,6 +45,7 @@ class CommunityFragment : Fragment(R.layout.fragment_community) {
         loadFriends()
     }
 
+    // Search users in Firestore
     private fun searchUsers(query: String) {
         db.collection("users")
             .whereGreaterThanOrEqualTo("username", query)
@@ -62,6 +63,7 @@ class CommunityFragment : Fragment(R.layout.fragment_community) {
             }
     }
 
+    // Load friends from Firestore
     private fun loadFriends() {
         val currentUser = auth.currentUser
         if (currentUser != null) {

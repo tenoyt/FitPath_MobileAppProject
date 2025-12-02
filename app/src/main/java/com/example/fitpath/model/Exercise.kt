@@ -5,9 +5,9 @@ data class Exercise(
     val name: String = "",
     val description: String = "",
     val category: String = "", // e.g., "Strength", "Cardio", "Flexibility"
-    val muscleGroups: List<String> = emptyList(), // e.g., ["Chest", "Triceps"]
+    val muscleGroups: List<String> = emptyList(), // e.g., "Chest", "Triceps"
     val difficulty: String = "", // "Beginner", "Intermediate", "Advanced"
-    val equipment: List<String> = emptyList(), // e.g., ["Dumbbells", "Bench"]
+    val equipment: List<String> = emptyList(), // e.g., "Dumbbells", "Bench"
     val instructions: List<String> = emptyList(),
     val videoUrl: String = "",
     val imageUrl: String = "",

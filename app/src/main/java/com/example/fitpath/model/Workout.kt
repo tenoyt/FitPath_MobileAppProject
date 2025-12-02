@@ -13,7 +13,7 @@ data class Workout(
     val createdBy: String = "", // User ID of creator
     val createdByName: String = "", // Display name of creator
 
-    // Map Firestore field "public" to Kotlin property "isPublic"
+    // Public/private workout
     @get:PropertyName("public")
     @set:PropertyName("public")
     var isPublic: Boolean = true,

@@ -20,7 +20,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
         // Check if the night mode has actually changed
         if (newNightMode != currentNightMode) {
-            // If it has, recreate the activity to apply the new theme
             recreate()
         }
     }

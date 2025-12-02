@@ -35,7 +35,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onViewCreated(view, savedInstanceState)
         prefs = Prefs(requireContext())
 
-        // Correctly find views by their IDs from your XML
+        // Find the UI components by their IDs
         remindersSwitch = view.findViewById(R.id.switchReminders)
         themeSwitch = view.findViewById(R.id.switchTheme)
         reminderTimeText = view.findViewById(R.id.tvReminderTime)
@@ -121,7 +121,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private fun updateReminderTimeText() {
         val hour = prefs.getReminderHour()
         val minute = prefs.getReminderMinute()
-        // Format the time to display correctly (e.g., 09:05 AM)
+        // Format the time to display correctly
         val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)

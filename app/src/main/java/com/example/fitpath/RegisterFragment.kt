@@ -22,7 +22,6 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment using view binding
         binding = RegisterFragmentBinding.inflate(inflater, container, false)
 
         // Initialize Firebase Auth and Firestore instances
@@ -43,7 +42,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun registerUser() {
-        // Retrieve input from EditText fields and trim whitespace
+        // Retrieve input from EditText fields
         val email = binding.emailEditText.text.toString().trim()
         val password = binding.passwordEditText.text.toString().trim()
         val confirmPassword = binding.confirmPasswordEditText.text.toString().trim()
@@ -55,7 +54,7 @@ class RegisterFragment : Fragment() {
             return
         }
 
-        // Validate username format (4-12 alphanumeric characters)
+        // Validate username format
         val usernamePattern = Regex("^[a-zA-Z0-9]{4,12}$")
         if (!username.matches(usernamePattern)) {
             binding.usernameEditText.error = "Username must be 4-12 characters and only contain letters and numbers."
@@ -68,7 +67,7 @@ class RegisterFragment : Fragment() {
             return
         }
 
-        // Validate password strength (at least 8 chars, upper, lower, digit, special char)
+        // Validate password strength
         val passwordPattern =
             Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$")
         if (!password.matches(passwordPattern)) {
@@ -134,7 +133,7 @@ class RegisterFragment : Fragment() {
                             }
                     }
                 } else {
-                    // Handle Firebase Auth creation failure (e.g., email already in use)
+                    // Handle registration failure (e.g., email already in use)
                     showLoading(false)
                     Toast.makeText(requireContext(), "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }

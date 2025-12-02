@@ -19,20 +19,20 @@ class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val message = intent.getStringExtra("message") ?: "Time for your workout"
 
-        // Create the Notification Channel (REQUIRED for Android 8.0+)
+        // Create the Notification Channel
         createNotificationChannel(context)
 
         // Build the notification
         val notification = NotificationCompat.Builder(context, "fitpath_reminders")
-            .setSmallIcon(R.mipmap.ic_launcher) // Ensure this icon exists
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle("FitPath Reminder")
             .setContentText(message)
-            .setPriority(NotificationCompat.PRIORITY_HIGH) // High priority for reminders
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
-            .setContentIntent(getPendingIntent(context)) // Open app when clicked
+            .setContentIntent(getPendingIntent(context))
             .build()
 
-        // Show the notification (Check permissions for Android 13+)
+        // Show the notification
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
             ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
         ) {
@@ -44,8 +44,6 @@ class ReminderReceiver : BroadcastReceiver() {
     }
 
     private fun createNotificationChannel(context: Context) {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Daily Workout Reminders"
             val descriptionText = "Reminds you to log your workouts"
@@ -61,7 +59,6 @@ class ReminderReceiver : BroadcastReceiver() {
     }
 
     private fun getPendingIntent(context: Context): PendingIntent {
-        // Create an explicit intent for an Activity in your app
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }

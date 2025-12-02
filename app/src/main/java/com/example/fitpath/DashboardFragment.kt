@@ -26,62 +26,54 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallback {
 
-    // --- AUTHENTICATION VARIABLES ---
+    // Authentication Variables
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    // --- UI ELEMENTS ---
+    // UI Elements
     private lateinit var loginBtn: Button
     private lateinit var welcomeText: TextView
     private lateinit var signOutBtn: Button
     private lateinit var profileBtn: ImageButton
 
-    // --- MAP-RELATED VARIABLES ---
+    // Map-related Variables
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // --- INITIALIZE FIREBASE ---
+        // Initialize Firebase
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // --- INITIALIZE LOCATION CLIENT ---
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        // --- FIND ALL UI VIEWS ---
+        // Initialize UI elements
         loginBtn = view.findViewById(R.id.btnLoginRegister)
         welcomeText = view.findViewById(R.id.tvWelcome)
         signOutBtn = view.findViewById(R.id.btnSignOut)
         profileBtn = view.findViewById(R.id.btn_profile)
 
-        // --- MAP INITIALIZATION ---
+        // Initialize map
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapFragment) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
 
         view.findViewById<View>(R.id.cardMapView)?.visibility = View.VISIBLE
 
-        // --- CARD LISTENERS ---
-
-        // 1. Log Workout -> Goes to Workout Library
         view.findViewById<MaterialCardView>(R.id.cardLogWorkout).setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_workoutLibraryFragment)
         }
 
-        // 2. Community -> Goes to Community Fragment
        view.findViewById<MaterialCardView>(R.id.cardCommunity).setOnClickListener {
             findNavController().navigate(R.id.action_dashboard_to_communityFragment)
        }
 
-        // 3. Start a Run -> Goes to Run Fragment
         view.findViewById<MaterialCardView>(R.id.cardStartRun).setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_runFragment)
         }
 
-        // --- AUTH LISTENERS ---
         loginBtn.setOnClickListener {
-            // Ensure this ID matches your nav_graph.xml destination for Login
             findNavController().navigate(R.id.Login)
         }
 
@@ -91,15 +83,13 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
             updateUI()
         }
 
-        // --- PROFILE BUTTON ---
-        // Switches the Bottom Navigation tab to "Settings"
         profileBtn.setOnClickListener {
             val bottomNav = activity?.findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottom_navigation)
             bottomNav?.selectedItemId = R.id.settings
         }
     }
 
-    // --- MAP IMPLEMENTATION ---
+    // Implement map
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
@@ -126,7 +116,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
         }
     }
 
-    // --- UI STATE HANDLER ---
+    // UI State Handler
     override fun onStart() {
         super.onStart()
         updateUI()
@@ -137,14 +127,14 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard), OnMapReadyCallb
         welcomeText.visibility = View.VISIBLE
 
         if (currentUser != null) {
-            // --- User IS Logged In ---
+            // User is logged in
             loginBtn.visibility = View.GONE
             signOutBtn.visibility = View.VISIBLE
             profileBtn.visibility = View.VISIBLE
 
             fetchUsername(currentUser.uid)
         } else {
-            // --- User is NOT Logged In ---
+            // User is not logged in
             loginBtn.visibility = View.VISIBLE
             signOutBtn.visibility = View.GONE
             profileBtn.visibility = View.GONE

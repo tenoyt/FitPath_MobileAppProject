@@ -15,7 +15,7 @@ class WorkoutRepository {
     private val workoutsCollection = db.collection("workouts")
     private val userWorkoutsCollection = db.collection("user_workouts")
 
-    // ===== EXERCISE OPERATIONS =====
+    // Exercise Operations
 
     suspend fun getAllPublicExercises(): List<Exercise> {
         return try {
@@ -82,14 +82,12 @@ class WorkoutRepository {
         }
     }
 
-    // ===== WORKOUT OPERATIONS =====
+    // Workout Operations
 
     suspend fun getAllPublicWorkouts(): List<Workout> {
         return try {
             val userId = auth.currentUser?.uid
 
-            // FIXED: Changed "isPublic" to "public" to match Firebase field name
-            // FIXED: Removed .orderBy() to avoid needing Firestore composite index
             val workouts = workoutsCollection
                 .whereEqualTo("public", true)
                 .get()
@@ -116,7 +114,6 @@ class WorkoutRepository {
         return try {
             val userId = auth.currentUser?.uid
 
-            // FIXED: Changed "isPublic" to "public"
             val workouts = workoutsCollection
                 .whereEqualTo("public", true)
                 .whereEqualTo("category", category)
@@ -160,6 +157,7 @@ class WorkoutRepository {
         }
     }
 
+    // Create workout
     suspend fun createWorkout(workout: Workout): Result<String> {
         return try {
             val userId = auth.currentUser?.uid ?: return Result.failure(Exception("User not logged in"))
@@ -171,6 +169,7 @@ class WorkoutRepository {
         }
     }
 
+    // Update workout
     suspend fun updateWorkout(workoutId: String, workout: Workout): Result<Unit> {
         return try {
             workoutsCollection
@@ -183,6 +182,7 @@ class WorkoutRepository {
         }
     }
 
+    // Delete workout
     suspend fun deleteWorkout(workoutId: String): Result<Unit> {
         return try {
             workoutsCollection
@@ -195,6 +195,7 @@ class WorkoutRepository {
         }
     }
 
+    // Get user workouts
     suspend fun getUserWorkouts(): List<Workout> {
         val userId = auth.currentUser?.uid ?: return emptyList()
         return try {
@@ -215,6 +216,7 @@ class WorkoutRepository {
         }
     }
 
+    // Get favorite workouts
     suspend fun getUserFavoriteWorkouts(): List<Workout> {
         val userId = auth.currentUser?.uid ?: return emptyList()
         return try {
@@ -261,6 +263,7 @@ class WorkoutRepository {
         }
     }
 
+    // Add to favorites
     suspend fun addToFavorites(workout: Workout): Result<Unit> {
         return try {
             val userId = auth.currentUser?.uid ?: return Result.failure(Exception("User not logged in"))
@@ -276,6 +279,7 @@ class WorkoutRepository {
         }
     }
 
+    // Remove from favorites
     suspend fun removeFromFavorites(workoutId: String): Result<Unit> {
         return try {
             val userId = auth.currentUser?.uid ?: return Result.failure(Exception("User not logged in"))
